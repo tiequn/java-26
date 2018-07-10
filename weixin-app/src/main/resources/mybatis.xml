@@ -33,6 +33,8 @@
         </environment>
     </environments>
 
+
+
     <mappers >
         <!--配置mapper文件的classpath加载路径-->
         <mapper resource="mapper/ProductMappers.xml"/>

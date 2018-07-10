@@ -7,6 +7,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -17,6 +19,8 @@ import java.util.List;
  * @date 2018/7/9 0009
  */
 public class ProductTestCase {
+
+    Logger logger = LoggerFactory.getLogger(ProductTestCase.class);
 
     @Test
     public void testSave() throws IOException {
@@ -33,7 +37,7 @@ public class ProductTestCase {
 
         // 4.操作数据库
         Product product = new Product();
-        product.setProductName("iphone 9");
+        product.setProductName("iphone 8");
         product.setProductInventory("200");
 
         int res = sqlSession.insert("com.kaishengit.mapper.ProductMapper.save",product);
@@ -51,7 +55,8 @@ public class ProductTestCase {
         List<Product> productList = sqlSession.selectList("com.kaishengit.mapper.ProductMapper.findAll");
 
         for (Product product : productList){
-            System.out.println(product);
+            logger.debug("product: {}", product.toString());
+            //System.out.println(product);
         }
         sqlSession.close();
     }
@@ -60,13 +65,14 @@ public class ProductTestCase {
         SqlSession sqlSession = MybatisUtils.getSqlSession();
         Product product = sqlSession.selectOne("com.kaishengit.mapper.ProductMapper.findAll",1);
 
-        System.out.println(product);
+        //System.out.println(product);
+        logger.debug("product: {}",product.toString());
         sqlSession.close();
     }
     @Test
     public void testDeleteById(){
-        SqlSession sqlSession = MybatisUtils.getSqlSession();
-        sqlSession.delete("com.kaishengit.mapper.ProductMapper.findDelById",3);
+        SqlSession sqlSession = MybatisUtils.getSqlSession(true);
+        sqlSession.delete("com.kaishengit.mapper.ProductMapper.findDelById",1);
 
         sqlSession.close();
     }
@@ -74,9 +80,9 @@ public class ProductTestCase {
     public void testUpdate() {
         SqlSession sqlSession = MybatisUtils.getSqlSession(true);
 
-        Product product = sqlSession.selectOne("com.kaishengit.mapper.ProductMapper.findById", 2);
+        Product product = sqlSession.selectOne("com.kaishengit.mapper.ProductMapper.findById",4);
 
-        product.setProductName("iphone x 2s");
+        product.setProductName("三星");
         product.setProductInventory("300");
 
         sqlSession.update("com.kaishengit.mapper.ProductMapper.update", product);

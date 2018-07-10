@@ -5,19 +5,43 @@
 
 <mapper namespace="com.kaishengit.mapper.ProductMapper">
 
-    <insert id="save" parameterType="product">
+    <insert id="save" parameterType="product" useGeneratedKeys="true" keyProperty="id">
         insert into product(product_name,product_inventory)
         values (#{productName},#{productInventory});
     </insert>
 
     <select id="findAll" resultType="product">
-        select *  from product
+        select id, product_name, product_inventory
+        from product
     </select>
 
-    <select id="findById" resultType="product">
+    <resultMap id="productMap" type="product">
+        <id column="id" property="id"/>
+        <result column="producr_name" property="productName"/>
+        <result column="product_inventory" property="productInventory"/>
+    </resultMap>
+    <select id="findById" resultMap="productMap">
         select id, product_name, product_inventory
         from product
         where id = #{id}
+    </select>
+
+   <!-- <select id="findById" resultType="product">
+        select id, product_name, product_inventory
+        from product
+        where id = #{id}
+    </select>-->
+    
+    <select id="findByPage" resultType="product">
+        select id, product_name, product_inventory
+        from product
+        limit #{start},#{pageSize};
+    </select>
+
+    <select id="findPageByMap" parameterType="map" resultType="product">
+        select id, product_name, product_inventory
+        from product
+        limit #{start}, #{pageSize};
     </select>
 
     <delete id="findDelById">
