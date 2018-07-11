@@ -35,7 +35,7 @@ public class ProductMapperTestCase {
 
     @After
     public void after(){
-        // 运行后加载
+        // 运行后加载并关闭资源
         sqlSession.close();
     }
 

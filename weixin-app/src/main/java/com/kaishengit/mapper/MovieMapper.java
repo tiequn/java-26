@@ -11,9 +11,25 @@ import java.util.Map;
  * @date 2018/7/10 0010
  */
 public interface MovieMapper {
-
+    /**
+     * List模糊查询
+     * @param title
+     * @return List<Movie>
+     */
     List<Movie> findByKeys(@Param("title") String title);
+
+    /**
+     * Map模糊查询
+     * @param queryMap
+     * @return List<Movie>
+     */
     List<Movie> findByParam(Map<String, Object>queryMap);
+
+    /**
+     * 根据id使用foreach批量查询
+     * @param idList
+     * @return List<Movie>
+     */
     List<Movie> findById(@Param("idList") List<Integer> idList);
 
 

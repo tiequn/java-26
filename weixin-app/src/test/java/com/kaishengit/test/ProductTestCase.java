@@ -29,11 +29,11 @@ public class ProductTestCase {
         Reader reader = Resources.getResourceAsReader("mybatis.xml");
         // InputStream inputStream = Resources.getResourceAsStream("mybatis.xml");
 
-        // 2.创建SqlSessionFactory
+        // 2.创建SqlSessionFactory（factory工厂）
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
 
         // 3.创建sqlsession对象
-        SqlSession sqlSession = sqlSessionFactory.openSession(true); //  非自动提交
+        SqlSession sqlSession = sqlSessionFactory.openSession(true); // 自动提交 默认值false
 
         // 4.操作数据库
         Product product = new Product();
