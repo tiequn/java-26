@@ -4,12 +4,18 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 
 <configuration>
+    <!-- 下划线转化 -->
     <settings>
         <setting name="mapUnderscoreToCamelCase" value="true"/>
     </settings>
 
+    <!-- Bean 别名 -->
     <typeAliases>
         <typeAlias type="com.kaishengit.entity.Product" alias="product"/>
+        <typeAlias type="com.kaishengit.entity.Movie" alias="Movie"/>
+        <typeAlias type="com.kaishengit.entity.Student" alias="Student"/>
+        <typeAlias type="com.kaishengit.entity.Tag" alias="Tag"/>
+        <typeAlias type="com.kaishengit.entity.School" alias="School"/>
     </typeAliases>
 
     <environments default="dev">
@@ -38,6 +44,8 @@
     <mappers >
         <!--配置mapper文件的classpath加载路径-->
         <mapper resource="mapper/ProductMappers.xml"/>
+        <mapper resource="mapper/MovieMapper.xml"/>
+        <mapper resource="mapper/StudentMapper.xml"/>
 
     </mappers>
     

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kaishengit.mapper.StudentMapper">
+    
+    <resultMap id="baseMap" type="Student">
+        <id column="id" property="id"/>
+        <result column="user_name" property="userName"/>
+        <result column="address" property="address"/>
+        <result column="school_id" property="schoolId"/>
+    </resultMap>
+
+    <!-- 一对多 -->
+    <resultMap id="studentWithTagMap" type="Student" extends="baseMap">
+        <collection property="tagList" ofType="Tag">
+            <id property="id" column="tag_id"/>
+            <result property="tagName" column="tag_name"/>
+        </collection>
+    </resultMap>
+    <!--批量插入-->
+    <insert id="addBatch" parameterType="list">
+        insert into tag (tag_name) values 
+        <foreach collection="tagList" item="tag" separator=",">
+           (#{tag.tagName})
+        </foreach>
+    </insert>
+    
+    <select id="findWithTagById" resultMap="studentWithTagMap">
+        SELECT
+            student.id,
+            user_name,
+            address,
+            school_id,
+            tag.id AS 'tag_id',
+            tag_name
+        FROM
+             student
+        LEFT JOIN student_tag ON student.id = student_tag.student_id
+        LEFT JOIN tag ON tag.id = student_tag.tag_id
+        WHERE
+            student.id = #{id}
+    </select>
+
+    <!-- 一对一 或 多对一 -->
+    <resultMap id="studentMap" type="Student" extends="baseMap">
+        <association property="school" javaType="School">
+            <id property="id" column="school_id"/>
+            <result property="schoolName" column="school_name"/>
+        </association>
+    </resultMap>
+
+    <!-- 一对一 -->
+    <select id="findWithSchoolById" resultMap="studentMap" parameterType="int">
+        SELECT
+            student.id,
+            user_name,
+            address,
+            school_id,
+            school_name
+        FROM
+            student
+        INNER JOIN school ON school.id = student.school_id
+        WHERE
+            student.id = #{id}
+    </select>
+
+    <resultMap id="schoolWithMap" type="School" >
+        <id property="id" column="id"/>
+        <result property="schoolName" column="school_name"/>
+
+        <collection property="studentList" ofType="Student">
+            <id property="id" column="student_id"/>
+            <result property="userName" column="user_name"/>
+        </collection>
+    </resultMap>
+    
+    <!-- 多对一 -->
+    <select id="findStudentById" resultMap="schoolWithMap" parameterType="int">
+        SELECT
+            school.id,
+            school_name,
+            student.id as student_id,
+            user_name,
+            address,
+            school_id
+        FROM
+            student
+        INNER JOIN school ON school.id = student.school_id
+        WHERE
+            school.id = #{id}
+    </select>
+    
+    
+</mapper>
