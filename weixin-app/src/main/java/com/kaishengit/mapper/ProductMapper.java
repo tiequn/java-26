@@ -8,7 +8,7 @@ import java.util.Map;
 
 /**
  * @author guojiabang
- * @date 2018/7/10 0010
+ * @date 2018/7/10 
  */
 public interface ProductMapper {
 

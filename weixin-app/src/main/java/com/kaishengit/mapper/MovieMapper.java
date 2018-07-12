@@ -46,5 +46,6 @@ public interface MovieMapper {
     @Select("select title, director, release_year from movie where id = #{id}")
     Movie selectMovie(Integer id);
 
+	
 
 }

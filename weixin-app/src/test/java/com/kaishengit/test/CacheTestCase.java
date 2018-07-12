@@ -41,6 +41,7 @@ public class CacheTestCase {
 
         logger.debug("product1:{}",product1);
         sqlSession1.close();
+		
 
     }
 

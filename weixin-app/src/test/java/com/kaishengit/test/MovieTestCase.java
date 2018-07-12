@@ -83,5 +83,4 @@ public class MovieTestCase {
         logger.debug("movie:{}",movie);
     }
 
-
 }
