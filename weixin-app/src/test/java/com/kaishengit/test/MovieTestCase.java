@@ -64,5 +64,24 @@ public class MovieTestCase {
 
     }
 
+    @Test
+    public void testInsertMovie(){
+        Movie movie = new Movie();
+        movie.setTitle("脱身");
+        movie.setDirector("陈坤");
+        movie.setReleaseYear("2018");
+
+        int count = movieMapper.insertMovie(movie);
+        logger.debug("count:{}",count);
+        sqlSession.commit();
+
+    }
+
+    @Test
+    public void testFindMovieById(){
+        Movie movie = movieMapper.selectMovie(8);
+        logger.debug("movie:{}",movie);
+    }
+
 
 }

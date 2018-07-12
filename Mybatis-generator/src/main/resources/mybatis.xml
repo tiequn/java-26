@@ -12,15 +12,17 @@
     <!-- 为java Bean起类别名 -->
     <typeAliases>
         <!-- 一个一个的配置，type中放的类的完全限定名(类全路径)，aliase中放置的是类的别名  -->
-        <typeAlias type="com.kaishengit.entity.Product" alias="product"/>
-        <typeAlias type="com.kaishengit.entity.Movie" alias="Movie"/>
-        <typeAlias type="com.kaishengit.entity.Student" alias="Student"/>
-        <typeAlias type="com.kaishengit.entity.Tag" alias="Tag"/>
-        <typeAlias type="com.kaishengit.entity.School" alias="School"/>
+      <!--  <typeAlias type="com.kaishengit.entity.Product" alias="product"/>-->
+
 
         <!-- 自动扫描，将Java类名作为类的别名（首字母小写） -->
         <!--<package name="com.kaishengit.entity"/>-->
     </typeAliases>
+
+    <!-- 分页 -->
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor"/>
+    </plugins>
 
 
     <!--环境：开发|测试|线上-->
@@ -57,10 +59,11 @@
     <!--配置mapper文件的classpath加载路径-->
     <mappers >
         <!-- 告知映射文件， 一个一个配置 -->
-        <mapper resource="mapper/ProductMappers.xml"/>
-        <mapper resource="mapper/MovieMapper.xml"/>
+
         <mapper resource="mapper/StudentMapper.xml"/>
-        <mapper resource="mapper/SchoolMapper.xml"/>
+
+
+
         <!-- 注解配置 -->
         <!--<mapper class="com.kaishengit.mapper.MovieMapper"/>-->
 

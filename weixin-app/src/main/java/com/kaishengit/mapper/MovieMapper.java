@@ -1,7 +1,9 @@
 package com.kaishengit.mapper;
 
 import com.kaishengit.entity.Movie;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 import java.util.Map;
@@ -31,6 +33,18 @@ public interface MovieMapper {
      * @return List<Movie>
      */
     List<Movie> findById(@Param("idList") List<Integer> idList);
+
+
+    /**
+     *
+     *使用注解的方式
+     */
+    @Insert("insert into movie(title, director, release_year) " +
+            "values(#{title}, #{director}, #{releaseYear})")
+    int insertMovie(Movie movie);
+
+    @Select("select title, director, release_year from movie where id = #{id}")
+    Movie selectMovie(Integer id);
 
 
 }

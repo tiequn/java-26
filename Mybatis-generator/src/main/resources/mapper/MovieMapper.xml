@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kaishengit.mapper.MovieMapper">
+  <resultMap id="BaseResultMap" type="com.kaishengit.entity.Movie">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="director" jdbcType="VARCHAR" property="director" />
+    <result column="release_year" jdbcType="VARCHAR" property="releaseYear" />
+    <result column="send_time" jdbcType="TIMESTAMP" property="sendTime" />
+    <result column="rate" jdbcType="VARCHAR" property="rate" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+  </resultMap>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from movie
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.kaishengit.entity.Movie">
+    insert into movie (id, title, director,
+    release_year, send_time, rate,
+    description)
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{director,jdbcType=VARCHAR},
+    #{releaseYear,jdbcType=VARCHAR}, #{sendTime,jdbcType=TIMESTAMP}, #{rate,jdbcType=VARCHAR},
+    #{description,jdbcType=VARCHAR})
+  </insert>
+
+  <update id="updateByPrimaryKey" parameterType="com.kaishengit.entity.Movie">
+    update movie
+    set title = #{title,jdbcType=VARCHAR},
+    director = #{director,jdbcType=VARCHAR},
+    release_year = #{releaseYear,jdbcType=VARCHAR},
+    send_time = #{sendTime,jdbcType=TIMESTAMP},
+    rate = #{rate,jdbcType=VARCHAR},
+    description = #{description,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, title, director, release_year, send_time, rate, description
+    from movie
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, title, director, release_year, send_time, rate, description
+    from movie
+  </select>
+
+</mapper>

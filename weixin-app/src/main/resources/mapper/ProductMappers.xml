@@ -4,6 +4,10 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.kaishengit.mapper.ProductMapper">
+
+   <!-- 缓存 -->
+    <cache eviction="LRU" flushInterval="30000" size="1024" readOnly="true"/>
+
     <!-- 在各种标签中的id属性必须和接口中的方法名相同 ，id属性值必须是唯一的，不能够重复使用。
     parameterType属性指明查询时使用的参数类型，resultType属性指明查询返回的结果集类型-->
 
@@ -28,6 +32,7 @@
         <result column="producr_name" property="productName"/>
         <result column="product_inventory" property="productInventory"/>
     </resultMap>
+
     <select id="findById" resultMap="productMap">
         select id, product_name, product_inventory
         from product
