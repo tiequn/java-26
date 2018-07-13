@@ -152,7 +152,6 @@ public class ExampleTestCase {
                 andSchoolIdEqualTo(1)
                 .andUserNameLike("%帅%");
 
-
         List<Student> studentList = studentMapper.selectByExample(studentExample);
         for(Student student : studentList){
             System.out.println(student);
@@ -176,11 +175,9 @@ public class ExampleTestCase {
         System.out.println(studentPageInfo.getPageNum());
         System.out.println(studentPageInfo.getPageSize());
 
-
     }
 
 
-
-
+    
 
 }
