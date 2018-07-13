@@ -77,7 +77,7 @@ public class ExampleTestCase {
 
     @Test
     public void tesDelById(){
-        studentMapper.deleteByPrimaryKey(9);
+        studentMapper.deleteByPrimaryKey(14);
         sqlSession.commit();
     }
 
@@ -94,7 +94,7 @@ public class ExampleTestCase {
 
     @Test
     public void testUpdateById(){
-        Student student = studentMapper.selectByPrimaryKey(7);
+        Student student = studentMapper.selectByPrimaryKey(12);
         student.setAddress("濮阳");
         student.setUserName("范晓霞");
         student.setSchoolId(5);
@@ -107,9 +107,9 @@ public class ExampleTestCase {
 
     @Test
     public void testUpdatePrimaryKeySelectiveById(){
-        Student student = studentMapper.selectByPrimaryKey(6);
-        student.setUserName("周帅");
-
+        Student student = studentMapper.selectByPrimaryKey(13);
+        //student.setUserName("周帅");
+        student.setAddress("新乡");
         studentMapper.updateByPrimaryKeySelective(student);
 
         sqlSession.commit();

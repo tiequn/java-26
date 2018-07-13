@@ -5,8 +5,8 @@
 <mapper namespace="com.kaishengit.mapper.SchoolMapper">
 
     <select id="findBySchoolId" resultType="School">
-        
-
+        select id, school_name from school
+        where id = #{id}
     </select>
 
 </mapper>

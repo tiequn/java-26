@@ -57,12 +57,17 @@
     <!--配置mapper文件的classpath加载路径-->
     <mappers >
         <!-- 告知映射文件， 一个一个配置 -->
-        <mapper resource="mapper/ProductMappers.xml"/>
+       <!-- <mapper resource="mapper/ProductMappers.xml"/>
         <mapper resource="mapper/MovieMapper.xml"/>
         <mapper resource="mapper/StudentMapper.xml"/>
-        <mapper resource="mapper/SchoolMapper.xml"/>
+        <mapper resource="mapper/SchoolMapper.xml"/>-->
+
         <!-- 注解配置 -->
-        <!--<mapper class="com.kaishengit.mapper.MovieMapper"/>-->
+        <mapper class="com.kaishengit.mapper.MovieMapper"/>
+        <mapper class="com.kaishengit.mapper.SchoolMapper"/>
+        <mapper class="com.kaishengit.mapper.TagMapper"/>
+        <mapper class="com.kaishengit.mapper.StudentMapper"/>
+
 
         <!-- 自动扫描包内的mapper接口与配置文件 -->
        <!-- <package name="com.kaishengit.mapper"/>-->
