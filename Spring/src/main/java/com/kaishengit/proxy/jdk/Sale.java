@@ -1,4 +1,4 @@
-package com.kaishengit.proxy;
+package com.kaishengit.proxy.jdk;
 
 /**
  * @author guojiabang
@@ -7,5 +7,7 @@ package com.kaishengit.proxy;
 public interface Sale {
 
     void salePc();
+
+    int salePrice();
 
 }

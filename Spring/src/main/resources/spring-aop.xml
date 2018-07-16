@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <bean id="aopAspect" class="com.kaishengit.aop.AopAspect"/>
+    <bean id="lenovo" class="com.kaishengit.proxy.jdk.Lenovo"/>
+
+    <!-- aop配置 -->
+    <aop:config>
+        <!-- 配置依赖的通知类 -->
+        <aop:aspect ref="aopAspect">
+            <!--定义切入点：在什么类的什么方法上添加功能-->
+            <aop:pointcut id="myPoint" expression="execution(* com.kaishengit..*.*(..))"/>
+            <!-- 加入前置通知-->
+           <!-- <aop:before method="beforeAdvice" pointcut-ref="myPoint"/>
+            &lt;!&ndash; 加入后置通知 &ndash;&gt;
+            <aop:after-returning method="afterAdvice" pointcut-ref="myPoint" returning="result"/>
+            &lt;!&ndash; 加入异常通知 &ndash;&gt;
+            <aop:after-throwing method="exceptionAdvice" pointcut-ref="myPoint" throwing="ex"/>
+            &lt;!&ndash; 加入最终通知 &ndash;&gt;
+            <aop:after method="finallyAdvice" pointcut-ref="myPoint"/>-->
+
+            <aop:around method="aroundAdvice" pointcut-ref="myPoint"/>
+
+        </aop:aspect>
+
+    </aop:config>
+
+</beans>

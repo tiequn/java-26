@@ -1,10 +1,9 @@
 package com.kaishengit.jdk;
 
-import com.kaishengit.proxy.Lenovo;
-import com.kaishengit.proxy.Sale;
+import com.kaishengit.proxy.jdk.Lenovo;
+import com.kaishengit.proxy.jdk.Sale;
 import com.kaishengit.proxy.jdk.MyInvocationHandler;
 import org.junit.Test;
-import org.springframework.cglib.proxy.Proxy;
 
 /**
  * @author guojiabang
@@ -20,7 +19,7 @@ public class ProxyTestCasc {
     // 创建 MyInvocationHandler 对象
     MyInvocationHandler invocationHandler = new MyInvocationHandler(lenovo);
 
-    // 动态产生代理对象
+    // 动态产生代理对象  (使用jdk中的Proxy)
      Sale sale = (Sale) java.lang.reflect.Proxy.newProxyInstance(Lenovo.class.getClassLoader(),
              Lenovo.class.getInterfaces(),
              invocationHandler);

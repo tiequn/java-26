@@ -1,4 +1,4 @@
-package com.kaishengit.proxy;
+package com.kaishengit.proxy.jdk;
 
 /**
  * @author guojiabang
@@ -12,5 +12,12 @@ public class Lenovo implements Sale {
 
         System.out.println("联想厂商销售电脑一台");
 
+    }
+
+    @Override
+    public int salePrice(){
+
+        System.out.println("售价100元");
+        return 100;
     }
 }
