@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
  * @author guojiabang
  * @date 2018/7/16 0016
  */
-@Component
-@Aspect
+/*@Component
+@Aspect*/
 public class AopAspect {
 
      // 定义切入点：在什么类的什么方法上添加功能

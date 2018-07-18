@@ -70,6 +70,6 @@ public class ProductDaoTestCase extends SpringTestCase {
     @Test
     public void findDelById() {
         productDao.findDelById(10);
-        
+
     }
 }
