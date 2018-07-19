@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <!-- 下划线转化 -->
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+
+    <!-- 为java Bean起类别名 -->
+    <typeAliases>
+        <!-- 一个一个的配置，type中放的类的完全限定名(类全路径)，aliase中放置的是类的别名  -->
+       <typeAlias type="com.kaishengit.entity.Movie" alias="movie"/>
+
+        <!-- 自动扫描，将Java类名作为类的别名（首字母小写） -->
+        <!--<package name="com.kaishengit.entity"/>-->
+    </typeAliases>
+
+    <!-- 分页 -->
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor"/>
+    </plugins>
+
+
+    <!--环境：开发|测试|线上-->
+    <environments default="dev">
+
+        <environment id="dev">
+            <!-- 事务管理器 -->
+            <transactionManager type="JDBC"/>
+            <!-- mybatis提供3种数据源类型分别是：POOLED, UNPOOLED, JNDI -->
+            <!-- POOLED  表示支持JDBC数据源连接池 -->
+            <!-- UNPOOLED  表示不支持数据源连接池 -->
+            <!-- INDI 表示支持外部数据源连接池 -->
+            <!-- 数据库连接地址 -->
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql:///dao"/>
+                <property name="username" value="root"/>
+                <property name="password" value="root"/>
+            </dataSource>
+        </environment>
+        <environment id="test">
+            <!-- 事务管理器 -->
+            <transactionManager type="JDBC"/>
+            <!-- 数据库连接地址 -->
+            <dataSource type="POOLED">
+                <property name="diver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mmysql:///dao"/>
+                <property name="username" value="root"/>
+                <property name="password" value="root"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!--配置mapper文件的classpath加载路径-->
+    <mappers >
+        <!-- 告知映射文件， 一个一个配置 -->
+        <mapper resource="mapper/ProductMappers.xml"/>
+        <mapper resource="mapper/MovieMapper.xml"/>
+        <mapper resource="mapper/StudentMapper.xml"/>
+
+        <!-- 自动扫描包内的mapper接口与配置文件 -->
+        <!-- package name="com.kaishengit.mapper"/ -->
+
+        <!-- 注解配置 -->
+        <!--<mapper class="com.kaishengit.mapper.MovieMapper"/>-->
+    </mappers>
+
+
+
+</configuration>
