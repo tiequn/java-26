@@ -24,8 +24,8 @@ public class MovieTestCase extends BaseTestCase {
     @Test
     public void testSave(){
         Movie movie = new Movie();
-        movie.setTitle("天天向上");
-        movie.setDirector("张老师");
+        movie.setTitle("金刚狼");
+        movie.setDirector("牛师傅");
         movie.setReleaseYear("2018");
 
         movieMapper.insert(movie);
