@@ -43,7 +43,12 @@
             <version>4.3.18.RELEASE</version>
         </dependency>
 
-
+        <!-- jackson -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.9.5</version>
+        </dependency>
 
     </dependencies>
 
@@ -59,6 +64,7 @@
                 <configuration>
                     <port>80</port>
                     <path>/</path>
+                   <uriEncoding>UTF-8</uriEncoding>
                 </configuration>
             </plugin>
             <!-- 编译插件 -->

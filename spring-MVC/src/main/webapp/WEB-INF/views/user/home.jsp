@@ -17,5 +17,7 @@
     <h4>${userId}</h4>
     <h4>${type}</h4>
 
+    <img src="/static/1.jpg">
+
 </body>
 </html>
