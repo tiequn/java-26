@@ -17,17 +17,26 @@
 
     <!--视图解析器-->
     <bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
-
         <!--支持jstl-->
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
-
         <!--视图路径的前缀-->
         <property name="prefix" value="/WEB-INF/views/"/>
-
         <!--视图路径的后缀-->
         <property name="suffix" value=".jsp"/>
-
     </bean>
+
+    <!-- 文件上传解析器 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="5242880"/>
+    </bean>
+
+    <!-- 拦截器 -->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="com.kaishengit.controller.interceptor.Myinterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 
 
 

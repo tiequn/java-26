@@ -6,7 +6,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,16 +23,32 @@ import java.util.List;
 public class UserController {
 
     @GetMapping("/addUser")
-    public String addUser() {
+    public String addUser(@CookieValue(name = "userName") String userName, Model model){
+
+        System.out.println(userName);
+        model.addAttribute("userName", userName);
+       // System.out.println(userAget);
 
         return "user/new";
     }
 
     @PostMapping("/addUser")
-    public String user(User user, String tel) {
+    public String user(User user, String tel, HttpServletRequest req, HttpServletResponse resp, HttpSession sessions) {
+
+        // Cookie 存值
+        Cookie cookie = new Cookie("userName", user.getUserName());
+
+        cookie.setDomain("localhost");
+        cookie.setPath("/");
+        cookie.setMaxAge(60 * 60 * 24 * 7);
+        cookie.setHttpOnly(true);
+
+        resp.addCookie(cookie);
+
         System.out.println("userName:" + user.getUserName());
         System.out.println("password:" + user.getPassword());
         System.out.println("tel:" + tel);
+
         return "redirect:/user/home";
     }
 
