@@ -41,7 +41,7 @@
                              targetPackage="com.kaishengit.mapper"
                              targetProject="src/main/java"/>
 
-        <table tableName="parts" domainObjectName="Parts" enableSelectByExample="true"/>
+        <table tableName="type" domainObjectName="Type" enableSelectByExample="true"/>
 
     </context>
 

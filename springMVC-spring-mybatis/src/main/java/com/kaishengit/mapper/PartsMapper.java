@@ -16,6 +16,8 @@ public interface PartsMapper {
 
     int insertSelective(Parts record);
 
+    List<Parts> findPageWithType();
+
     List<Parts> selectByExample(PartsExample example);
 
     Parts selectByPrimaryKey(Integer id);

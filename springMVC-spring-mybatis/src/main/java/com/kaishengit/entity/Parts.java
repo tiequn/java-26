@@ -3,6 +3,7 @@ package com.kaishengit.entity;
 import java.math.BigDecimal;
 
 public class Parts {
+
     private Integer id;
 
     private String partsNo;
@@ -18,6 +19,17 @@ public class Parts {
     private Integer typeId;
 
     private String address;
+
+    private Type type;
+
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+    }
 
     public Integer getId() {
         return id;
@@ -81,5 +93,20 @@ public class Parts {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    @Override
+    public String toString() {
+        return "Parts{" +
+                "id=" + id +
+                ", partsNo='" + partsNo + '\'' +
+                ", partsName='" + partsName + '\'' +
+                ", inPrice=" + inPrice +
+                ", salePrice=" + salePrice +
+                ", inventory=" + inventory +
+                ", typeId=" + typeId +
+                ", address='" + address + '\'' +
+                ", type=" + type +
+                '}';
     }
 }

@@ -171,7 +171,21 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+
+  <resultMap id="partsListWithType" type="com.kaishengit.entity.Parts" extends="BaseResultMap">
+      <association property="type" javaType="com.kaishengit.entity.Type" column="type_id">
+          <id property="id" column="type_id"/>
+          <result property="typeName" column="type_name"/>
+      </association>
+  </resultMap>
+
+    <select id="findPageWithType" resultMap="partsListWithType" >
+        select p.*, t.type_name
+          FROM parts p, type t
+          where p.type_id = t.id
+    </select>
+
+    <update id="updateByExampleSelective" parameterType="map">
     update parts
     <set>
       <if test="record.id != null">
