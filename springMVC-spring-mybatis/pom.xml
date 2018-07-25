@@ -141,6 +141,16 @@
             <artifactId>jackson-databind</artifactId>
             <version>${jackson-version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson-version}</version>
+        </dependency>
 
         <!-- 文件上传 -->
         <dependency>
@@ -155,6 +165,8 @@
             <artifactId>commons-lang3</artifactId>
             <version>${lang3-version}</version>
         </dependency>
+
+
 
 
     </dependencies>

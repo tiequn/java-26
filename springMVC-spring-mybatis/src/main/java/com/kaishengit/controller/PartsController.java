@@ -1,18 +1,22 @@
 package com.kaishengit.controller;
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.github.pagehelper.PageInfo;
 import com.kaishengit.entity.Parts;
+import com.kaishengit.entity.Type;
 import com.kaishengit.service.PartsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author guojiabang
@@ -25,10 +29,23 @@ public class PartsController {
     @Autowired
     private PartsService partsService;
 
-    @GetMapping("/list")
-   public String list(@RequestParam(name = "p", defaultValue = "1") Integer pageNo, Model model){
+    @GetMapping
+    public String list(@RequestParam(name = "p", defaultValue = "1") Integer pageNo,
+                       @RequestParam(required = false) String partsName,
+                       @RequestParam(required = false) Integer partsType,
+                       @RequestParam(required = false) Integer inventory,
+                       Model model){
+        // 封装筛选的queryMap集合
+        Map<String,Object> queryMap = new HashMap<>();
+        queryMap.put("partsName", partsName);
+        queryMap.put("partsType", partsType);
+        queryMap.put("inventory", inventory);
 
-        PageInfo<Parts> pageInfo = partsService.findPage(pageNo);
+        PageInfo<Parts> pageInfo = partsService.findPageByPageNoAndQueryMap(pageNo,queryMap);
+
+        // 封装typeList
+        List<Type> typeList = partsService.findTypeList();
+        model.addAttribute("typeList",typeList);
         model.addAttribute("pageInfo",pageInfo);
 
         return "parts/list";
@@ -42,13 +59,70 @@ public class PartsController {
         if(parts == null){
             // 抛出异常
             throw new IOException();
-
         } else {
             model.addAttribute("parts",parts);
         }
-
-        return "/parts/detail";
-
+        return "parts/detail";
     }
+
+    @GetMapping("/del/{id:\\d+}")
+    public String delById(@PathVariable Integer id, RedirectAttributes redirectAttributes){
+
+        partsService.delById(id);
+        redirectAttributes.addFlashAttribute("message","商品已删除");
+
+        return "redirect:/parts";
+    }
+
+    @GetMapping("/{id:\\d+}/edit")
+    public String partsEdit(@PathVariable Integer id, Model model){
+
+        Parts parts = partsService.findById(id);
+
+        //封装typeList
+        List<Type> typeList = partsService.findTypeList();
+        model.addAttribute("typeList",typeList);
+        model.addAttribute("parts",parts);
+
+        return "parts/edit";
+    }
+
+    @PostMapping("/{id:\\d+}/edit")
+    public String partsEdit(Parts parts, RedirectAttributes redirectAttributes){
+        partsService.partsEdit(parts);
+        redirectAttributes.addFlashAttribute("message", "更新成功");
+
+        return "redirect:/parts";
+    }
+
+    @GetMapping("/add")
+    public String partsAdd(Model model){
+        // 封装typeList
+        List<Type> typeList = partsService.findTypeList();
+        model.addAttribute(typeList);
+
+        return "parts/add";
+    }
+
+    @PostMapping("/add")
+    public String partsAdd(Parts parts, RedirectAttributes redirectAttributes){
+        partsService.saveParts(parts);
+        redirectAttributes.addFlashAttribute("message","入库成功");
+
+        return "redirect:/parts";
+    }
+
+    /*@GetMapping("/check/partsNo")
+    @ResponseBody
+    public JSONPObject check(HttpServletRequest req,HttpServletResponse resp){
+
+        String partsNo = req.getParameter("partsNo");
+
+        List<Parts> partsList = partsService.findTypeList(partsNo);
+
+        return null;
+    }*/
+
+
 
 }

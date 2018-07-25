@@ -2,6 +2,10 @@ package com.kaishengit.service;
 
 import com.github.pagehelper.PageInfo;
 import com.kaishengit.entity.Parts;
+import com.kaishengit.entity.Type;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author guojiabang
@@ -22,4 +26,36 @@ public interface PartsService {
      * @return pageInfo 对象
      */
     PageInfo<Parts> findPage(Integer pageNo);
+
+    /**
+     * 根据id删除
+     * @param id
+     */
+    void delById(Integer id);
+
+    /**
+     * 查询所有的配件类型列表
+     * @return
+     */
+    List<Type> findTypeList();
+
+    /**
+     * 更新
+     * @param parts
+     */
+    void partsEdit(Parts parts);
+
+    /**
+     *配件入库
+     * @param parts
+     */
+    void saveParts(Parts parts);
+
+    /**
+     * 根据页码和筛选条件map集合查询对应的配件列表
+     * @param pageNo
+     * @param queryMap
+     * @return
+     */
+    PageInfo<Parts> findPageByPageNoAndQueryMap(Integer pageNo, Map<String,Object> queryMap);
 }
