@@ -1,0 +1,66 @@
+package com.kaisheng.it.service;
+
+import com.kaisheng.it.entity.Employee;
+import com.kaisheng.it.entity.Role;
+
+import java.util.List;
+import java.util.Map;
+
+/**
+ * @author guojiabang
+ * @date 2018/7/29 0029
+ */
+public interface EmployeeService {
+    /**
+     * 获得角色多有的角色的列表
+     * @return
+     */
+    List<Role> findAllRole();
+
+    /**
+     * 新增员工
+     * @param employee
+     * @param roleIds
+     */
+    void saveEmployee(Employee employee, Integer[] roleIds);
+
+    /**
+     * 查找所有账户的角色
+     * @param resultMap
+     * @return
+     */
+    List<Employee> findAllAccountWithRolesByResutMap(Map<String,Object> resultMap);
+
+    /**
+     * 删除员工
+     * @param id
+     */
+    void delEmployee(Integer id);
+
+    /**
+     *  根据id查询账号信息
+     * @param id
+     * @return
+     */
+    Employee findEmployeeById(Integer id);
+
+    /**
+     * 根据id查询当前账号拥有的角色列表
+     * @param id
+     * @return
+     */
+    List<Role> findRoleListByEmployeeId(Integer id);
+
+    /**
+     * 修改员工账号及角色对象
+     * @param employee
+     * @param roleIds
+     */
+    void findEditByEmployee(Employee employee, Integer[] roleIds);
+
+    /**
+     * 修改状态
+     * @param employee
+     */
+    void updateSate(Employee employee);
+}

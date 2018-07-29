@@ -202,6 +202,21 @@
       WHERE
           r.id = #{id}
     </select>
+    <select id="findRoleListByemployeeId" resultType="com.kaisheng.it.entity.Role">
+      SELECT
+          *
+      FROM
+          role
+      WHERE
+          id IN (
+              SELECT
+                  role_id
+              FROM
+                  employee_role
+              WHERE
+                  employee_id = #{id}
+          );
+    </select>
 
     <update id="updateByExampleSelective" parameterType="map">
     update role

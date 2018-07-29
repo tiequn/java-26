@@ -2,6 +2,7 @@ package com.kaisheng.it.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author 
@@ -41,11 +42,24 @@ public class Employee implements Serializable {
     private Date createTime;
 
     /**
+     * 账号对应的角色列表
+     */
+    private List<Role> roleList;
+
+    /**
      * 状态：0.禁用 1正常
      */
     private Integer state;
 
     private static final long serialVersionUID = 1L;
+
+    public List<Role> getRoleList() {
+        return roleList;
+    }
+
+    public void setRoleList(List<Role> roleList) {
+        this.roleList = roleList;
+    }
 
     public Integer getId() {
         return id;

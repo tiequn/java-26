@@ -5,6 +5,7 @@ import com.kaisheng.it.entity.EmployeeExample;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface EmployeeMapper {
     long countByExample(EmployeeExample example);
@@ -28,4 +29,6 @@ public interface EmployeeMapper {
     int updateByPrimaryKeySelective(Employee record);
 
     int updateByPrimaryKey(Employee record);
+
+    List<Employee> findAllAccountWithRolesByResultMap(Map<String,Object> resultMap);
 }

@@ -3,6 +3,8 @@ package com.kaisheng.it.mapper;
 import com.kaisheng.it.entity.EmployeeRole;
 import com.kaisheng.it.entity.EmployeeRoleExample;
 import java.util.List;
+
+import com.kaisheng.it.entity.Role;
 import org.apache.ibatis.annotations.Param;
 
 public interface EmployeeRoleMapper {
@@ -27,4 +29,5 @@ public interface EmployeeRoleMapper {
     int updateByPrimaryKeySelective(EmployeeRole record);
 
     int updateByPrimaryKey(EmployeeRole record);
+
 }
