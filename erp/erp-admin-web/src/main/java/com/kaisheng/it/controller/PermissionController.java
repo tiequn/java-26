@@ -1,5 +1,6 @@
 package com.kaisheng.it.controller;
 
+import com.google.common.collect.Lists;
 import com.kaisheng.it.controller.exceptionHandler.NotFoundException;
 import com.kaisheng.it.dto.ResponseBean;
 import com.kaisheng.it.entity.Permission;
@@ -65,8 +66,10 @@ public class PermissionController {
     @GetMapping("/{id:\\d+}/edit")
     public String edit(@PathVariable Integer id, Model model){
 
+        // 获得权限
         Permission permission = rolePermissionService.findPermissionByid(id);
 
+        // 判断权限是否为null
         if(permission == null){
             throw new NotFoundException();
         }
@@ -74,11 +77,30 @@ public class PermissionController {
         // 封装所有菜单权限列表
         List<Permission> permissionList = rolePermissionService.findPermissionListByType(Permission.PERMISSION_TYPE_MENU);
         // 排除当前permission对象及其子类对象
-        permissionList.remove(permission);
+        remove(permissionList,permission);
 
         model.addAttribute("permissionList",permissionList);
         model.addAttribute("permission",permission);
         return "manage/permission/edit";
+    }
+
+    /**
+     * 使用递归去除所有子权限
+     * @param permissionList  源List
+     * @param permission  要去除的权限对象
+     */
+    private void remove(List<Permission> permissionList, Permission permission) {
+
+        // 通过临时变量来存储所有的list元素防止漏删
+        List<Permission> temp = Lists.newArrayList(permissionList);
+        for(int i = 0; i < temp.size(); i++){
+            // 判断有没有子权限
+            if(temp.get(i).getPid().equals(permission.getId())){
+                remove(permissionList,temp.get(i));
+            }
+        }
+        // 判断有没有子权限要去除
+        permissionList.remove(permission);
     }
 
     @PostMapping("/{id:\\d+}/edit")

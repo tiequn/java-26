@@ -84,6 +84,11 @@
 <script src="/static/plugins/layer/layer.js"></script>
 <script>
     $(function () {
+        var message = "${message}";
+        if(message){
+            layer.msg(message);
+        }
+
         $('.tree').treegrid();
         $(".delLink").click(function() {
             var id = $(this).attr("rel");
