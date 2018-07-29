@@ -37,11 +37,7 @@
                 <div class="alert alert-danger">${message}</div>
             </c:if>
             <div class="form-group has-feedback">
-                <input
-                <c:if test="${not empty employeeTel}">
-                        checked
-                </c:if>
-                        type="text" class="form-control" name="employeeTel" value="${employeeTel}" placeholder="请输入手机号码">
+                <input type="text" class="form-control" name="employeeTel" value="${employeeTel}" placeholder="请输入手机号码">
                 <span class="glyphicon glyphicon-phone form-control-feedback"></span>
             </div>
             <div class="form-group has-feedback">

@@ -35,7 +35,7 @@ public class LoginController {
     }
 
     @GetMapping("/login")
-    public String login(@CookieValue(defaultValue = "null") String employeeTel, Model model){
+    public String login(@CookieValue(required =false) String employeeTel, Model model){
 
         model.addAttribute("employeeTel", employeeTel);
 
@@ -48,6 +48,7 @@ public class LoginController {
                         String remember,
                         HttpServletRequest req,
                         HttpServletResponse resp,
+                        HttpSession session,
                         RedirectAttributes redirectAttributes){
 
         // 获得请求的ip
@@ -55,7 +56,6 @@ public class LoginController {
 
         try {
             Employee employee = loginService.login(employeeTel,password, loginIP);
-            HttpSession session = req.getSession();
             session.setAttribute("employee",employee);
 
             if(StringUtils.isNotEmpty(remember)){
@@ -70,7 +70,7 @@ public class LoginController {
                 Cookie[] cookies = req.getCookies();
                 if(cookies != null){
                     for(Cookie cookie : cookies){
-                        if("employee".equals(cookie.getName())){
+                        if("employeeTel".equals(cookie.getName())){
                             cookie.setDomain("localhost");
                             cookie.setPath("/");
                             cookie.setMaxAge(0);
