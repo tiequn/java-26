@@ -1,5 +1,6 @@
 package com.kaisheng.it.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
 import com.kaisheng.it.dto.ResponseBean;
 import com.kaisheng.it.entity.Employee;
@@ -27,7 +28,7 @@ public class EmployeeController {
 
     @GetMapping
     public String home(
-                      /* @RequestParam(name = "p")*/
+                       @RequestParam(name = "p", defaultValue = "1") Integer pageNo,
                        @RequestParam(required = false) Integer roleId,
                        @RequestParam(required = false) String nameMobile,
                        Model model){
@@ -36,10 +37,10 @@ public class EmployeeController {
         resultMap.put("roleId",roleId);
         resultMap.put("nameMobile", nameMobile);
 
-        List<Employee> employeeList = employeeService.findAllAccountWithRolesByResutMap(resultMap);
+        PageInfo<Employee> pageInfo = employeeService.findAllAccountWithRolesByResutMap(resultMap,pageNo);
         List<Role> roleList = employeeService.findAllRole();
 
-        model.addAttribute("employeeList", employeeList);
+        model.addAttribute("pageInfo", pageInfo);
         model.addAttribute("roleList",roleList);
         return "manage/account/home";
     }

@@ -1,10 +1,13 @@
 package com.kaisheng.it.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.kaisheng.it.entity.*;
 import com.kaisheng.it.mapper.EmployeeMapper;
 import com.kaisheng.it.mapper.EmployeeRoleMapper;
 import com.kaisheng.it.mapper.RoleMapper;
 import com.kaisheng.it.service.EmployeeService;
+import com.kaisheng.it.util.Constant;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,9 +82,15 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return
      */
     @Override
-    public List<Employee> findAllAccountWithRolesByResutMap(Map<String, Object> resultMap) {
+    public PageInfo<Employee> findAllAccountWithRolesByResutMap(Map<String, Object> resultMap, Integer pageNo) {
 
-       return employeeMapper.findAllAccountWithRolesByResultMap(resultMap);
+        // 分页
+        PageHelper.startPage(pageNo, Constant.DEFAULT_PAGE_SIZE);
+
+        List<Employee> employeeList = employeeMapper.findAllAccountWithRolesByResultMap(resultMap);
+        PageInfo<Employee> employeePageInfo = new PageInfo<>(employeeList);
+
+        return employeePageInfo;
 
     }
 

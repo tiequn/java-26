@@ -1,5 +1,6 @@
 package com.kaisheng.it.service;
 
+import com.github.pagehelper.PageInfo;
 import com.kaisheng.it.entity.Employee;
 import com.kaisheng.it.entity.Role;
 
@@ -29,7 +30,7 @@ public interface EmployeeService {
      * @param resultMap
      * @return
      */
-    List<Employee> findAllAccountWithRolesByResutMap(Map<String,Object> resultMap);
+    PageInfo<Employee> findAllAccountWithRolesByResutMap(Map<String,Object> resultMap, Integer pageNo);
 
     /**
      * 删除员工

@@ -66,7 +66,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <c:forEach items="${employeeList}" var="employee">
+                        <c:forEach items="${pageInfo.list}" var="employee">
                             <tr>
                                 <td>${employee.employeeName}</td>
                                 <td>${employee.employeeTel}</td>
@@ -98,6 +98,9 @@
                         </c:forEach>
                         </tbody>
                     </table>
+
+                    <ul id="pagination" class="pagination pull-right"></ul>
+
                 </div>
             </div>
         </section>
@@ -115,11 +118,23 @@
 <script>
     $(function () {
         $('.tree').treegrid();
-
         var message = "${message}";
         if(message){
             layer.msg(message);
         }
+
+        $("#pagination").twbsPagination({
+            totalPages : ${pageInfo.pages},
+            visiblePages : 5,
+            first : '首页',
+            last:'末页',
+            prev:'上一页',
+            next:'下一页',
+            href:"?p={{number}}&nameMobile="
+            + encodeURIComponent('${param.employeeName}')
+            + "&roleId=${param.roleId}&${param.employeeTel}"
+        });
+
         //删除
         $(".delLink").click(function () {
             var id = $(this).attr("rel");
