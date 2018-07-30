@@ -2,6 +2,7 @@ package com.kaisheng.it.service;
 
 import com.github.pagehelper.PageInfo;
 import com.kaisheng.it.entity.Employee;
+import com.kaisheng.it.entity.EmployeeLoginLog;
 import com.kaisheng.it.entity.Role;
 
 import java.util.List;
@@ -64,4 +65,17 @@ public interface EmployeeService {
      * @param employee
      */
     void updateSate(Employee employee);
+
+    /**
+     * 根据电话号码查询账号对象
+     * @param userTel
+     * @return
+     */
+    Employee findEmployeeByTel(String userTel);
+
+    /**
+     * 记录登录日志
+     * @param employeeLoginLog
+     */
+    void saveLoginLog(EmployeeLoginLog employeeLoginLog);
 }

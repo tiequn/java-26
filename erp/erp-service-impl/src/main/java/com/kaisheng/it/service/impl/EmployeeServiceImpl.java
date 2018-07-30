@@ -3,6 +3,7 @@ package com.kaisheng.it.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.kaisheng.it.entity.*;
+import com.kaisheng.it.mapper.EmployeeLoginLogMapper;
 import com.kaisheng.it.mapper.EmployeeMapper;
 import com.kaisheng.it.mapper.EmployeeRoleMapper;
 import com.kaisheng.it.mapper.RoleMapper;
@@ -35,6 +36,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
     private EmployeeRoleMapper employeeRoleMapper;
+
+    @Autowired
+    private EmployeeLoginLogMapper employeeLoginLogMapper;
 
     /**
      * 获得角色多有的角色的列表
@@ -173,6 +177,35 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void updateSate(Employee employee) {
 
         employeeMapper.updateByPrimaryKeySelective(employee);
+    }
+
+    /**
+     * 根据电话号码查询账号对象
+     *
+     * @param userTel
+     * @return
+     */
+    @Override
+    public Employee findEmployeeByTel(String userTel) {
+
+        EmployeeExample employeeExample = new EmployeeExample();
+        employeeExample.createCriteria().andEmployeeTelEqualTo(userTel);
+
+        List<Employee> employeeList = employeeMapper.selectByExample(employeeExample);
+        if(employeeList != null && !employeeList.isEmpty()){
+            return employeeList.get(0);
+        }
+        return null;
+    }
+
+    /**
+     * 记录登录日志
+     *
+     * @param employeeLoginLog
+     */
+    @Override
+    public void saveLoginLog(EmployeeLoginLog employeeLoginLog) {
+        employeeLoginLogMapper.insertSelective(employeeLoginLog);
     }
 
 }
