@@ -123,9 +123,20 @@ public class LoginController {
 
     }*/
 
+   /*@GetMapping("/logout")
+   public String logout(RedirectAttributes redirectAttributes){
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
+        redirectAttributes.addFlashAttribute("message","已退出，请重新登录");
+
+        return "redirect:/login";
+   }*/
+
    @GetMapping("/401")
    public String unauthorizedUrl(){
-        return "error/401";
+
+       return "error/401";
    }
+
 
 }
