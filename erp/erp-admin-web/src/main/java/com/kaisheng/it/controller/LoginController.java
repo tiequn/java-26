@@ -5,6 +5,8 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.web.util.SavedRequest;
+import org.apache.shiro.web.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,9 +36,18 @@ public class LoginController {
     }
 
     @GetMapping("/login")
-    public String login(/*@CookieValue(required =false) String employeeTel, Model model*/){
+    public String login(){
 
-       /* model.addAttribute("employeeTel", employeeTel);*/
+        // 判断当前是否已经通过认证，如果通过则退出登录
+        Subject subject = SecurityUtils.getSubject();
+
+        /*if(subject.isAuthenticated()){
+            subject.logout();
+        }*/
+        // 记住我返回首页
+        if(subject.isRemembered()){
+            return "home";
+        }
 
         return "login";
     }
@@ -46,8 +57,6 @@ public class LoginController {
                         String password,
                         String remember,
                         HttpServletRequest req,
-                        HttpServletResponse resp,
-                        HttpSession session,
                         RedirectAttributes redirectAttributes){
 
         // 创建subject主体对象
@@ -55,12 +64,21 @@ public class LoginController {
         // 获得登录的IP
         String loginId = req.getRemoteAddr();
         // 通过userTel、password封装UsernamePasswordToken对象进行登录
-        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(employeeTel,DigestUtils.md5Hex(password),loginId);
+        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(employeeTel,DigestUtils.md5Hex(password), remember != null,loginId);
 
         try {
             // 登录
             subject.login(usernamePasswordToken);
-            return "redirect:/home";
+
+            // 判断跳转路径
+            SavedRequest savedRequest = WebUtils.getSavedRequest(req);
+            String url = "/home";
+            if(savedRequest != null){
+                // 获得callback的url
+                url = savedRequest.getRequestUrl();
+            }
+
+            return "redirect:" + url;
         }catch (UnknownAccountException |IncorrectCredentialsException e) {
             redirectAttributes.addFlashAttribute("message", "用户名或者密码错误");
         } catch (LockedAccountException e) {

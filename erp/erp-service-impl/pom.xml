@@ -110,12 +110,7 @@
             <version>2.10.4</version>
         </dependency>
 
-        <!-- ehcache 和 shiro-ehcache 一样 -->
-        <!--<dependency>
-            <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-ehcache</artifactId>
-            <version>1.3.2</version>
-        </dependency>-->
+
 
 
     </dependencies>
