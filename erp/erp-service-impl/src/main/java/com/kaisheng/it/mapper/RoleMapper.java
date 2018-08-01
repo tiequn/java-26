@@ -33,4 +33,6 @@ public interface RoleMapper {
     Role fingRoleByIdwWithermissionP(Integer id);
 
     List<Role> findRoleListByemployeeId(Integer id);
+
+    List<Role> findAllByAccountId(Integer id);
 }

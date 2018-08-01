@@ -128,4 +128,17 @@ public class EmployeeController {
         return "redirect:/manage/account";
     }
 
+
+    @GetMapping("/profile")
+    public String profile(){
+
+        return "manage/account/profile";
+    }
+
+    @PostMapping("/profile")
+    public String profile(Employee employee){
+
+        return "redirect:/manage/account";
+    }
+
 }

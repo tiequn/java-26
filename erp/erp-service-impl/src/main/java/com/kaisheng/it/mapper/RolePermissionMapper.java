@@ -1,5 +1,6 @@
 package com.kaisheng.it.mapper;
 
+import com.kaisheng.it.entity.Permission;
 import com.kaisheng.it.entity.RolePermission;
 import com.kaisheng.it.entity.RolePermissionExample;
 import java.util.List;
@@ -27,4 +28,6 @@ public interface RolePermissionMapper {
     int updateByPrimaryKeySelective(RolePermission record);
 
     int updateByPrimaryKey(RolePermission record);
+
+
 }

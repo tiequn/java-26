@@ -6,6 +6,7 @@ import com.kaisheng.it.dto.ResponseBean;
 import com.kaisheng.it.entity.Permission;
 import com.kaisheng.it.exception.ServiceException;
 import com.kaisheng.it.service.RolePermissionService;
+import com.kaisheng.it.shiro.CustomerFilterChainDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +25,9 @@ public class PermissionController {
 
     @Autowired
     private RolePermissionService rolePermissionService;
+
+    @Autowired
+    private CustomerFilterChainDefinition customerFilterChainDefinition;
 
 
     @GetMapping
@@ -48,6 +52,8 @@ public class PermissionController {
     public String permissionNew(Permission permission){
 
         rolePermissionService.savePermission(permission);
+        // 刷新权限
+        customerFilterChainDefinition.updatePermission();
         return "redirect:/manage/permission";
     }
 
@@ -57,6 +63,8 @@ public class PermissionController {
 
         try {
             rolePermissionService.delPermission(id);
+            // 刷新权限
+            customerFilterChainDefinition.updatePermission();
         } catch (ServiceException e) {
             return ResponseBean.error(e.getMessage());
         }
@@ -108,6 +116,8 @@ public class PermissionController {
 
         rolePermissionService.permissionEdit(permission);
         redirectAttributes.addFlashAttribute("message","编译成功");
+        // 刷新权限
+        customerFilterChainDefinition.updatePermission();
         return "redirect:/manage/permission";
     }
 

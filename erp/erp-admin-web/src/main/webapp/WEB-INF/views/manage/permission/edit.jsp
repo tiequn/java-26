@@ -55,8 +55,8 @@
                         <div class="form-group">
                             <label>权限类型</label>
                             <select name="permissionType" class="form-control">
-                                <option value="${permission.permissionType}">菜单</option>
-                                <option value="${permission.permissionType}">按钮</option>
+                                <option value="菜单"${permission.permissionType == '菜单'? 'checked' : ''}>菜单</option>
+                                <option value="按钮"${permission.permissionType == '按钮'? 'checked' : ''}>按钮</option>
                             </select>
                         </div>
                         <div class="form-group">

@@ -81,8 +81,8 @@
             <li class="header">系统管理</li>
             <!-- 部门员工管理 -->
             <li><a href="/manage/account"><i class="fa fa-users"></i> <span>员工管理</span></a></li>
-            <li><a href="/manage/roles"><i class="fa fa-users"></i> <span>角色管理</span></a></li>
-            <li><a href="/manage/permission"><i class="fa fa-users"></i> <span>权限管理</span></a></li>
+            <li><a href="/manage/roles"><i class="fa fa-user"></i> <span>角色管理</span></a></li>
+            <li><a href="/manage/permission"><i class="fa fa-shield"></i> <span>权限管理</span></a></li>
         </ul>
     </section>
     <!-- /.sidebar -->

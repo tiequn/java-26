@@ -42,7 +42,7 @@
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
-                                <a href="/profile" class="btn btn-default btn-flat">个人设置</a>
+                                <a href="/manage/account/profile" class="btn btn-default btn-flat">个人设置</a>
                             </div>
                             <div class="pull-right">
                                 <a href="/logout" class="btn btn-default btn-flat">安全退出</a>

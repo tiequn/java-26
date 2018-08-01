@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>ERP | 修改账号</title>
+    <title>ERP | 个人设置</title>
     <%@include file="../../include/css.jsp"%>
 </head>
 <body class="hold-transition skin-purple sidebar-mini">
@@ -18,7 +18,6 @@
     <jsp:include page="../../include/sider.jsp">
         <jsp:param name="menu" value="manage_account"/>
     </jsp:include>
-
 
     <!-- 右侧内容部分 -->
     <div class="content-wrapper">
@@ -33,39 +32,27 @@
         <section class="content">
             <div class="box">
                 <div class="box-header">
-                    <h3 class="box-title">修改账号</h3>
-                    <div class="box-tools">
-                        <a href="/manage/account" class="btn btn-success btn-sm">返回</a>
-                    </div>
+                    <h3 class="box-title">个人账号</h3>
                 </div>
-
                 <div class="box-body">
                     <form method="post" class="saveForm">
                         <div class="form-group">
                             <label>账号</label>
-                            <input type="text" class="form-control" value="${employee.employeeName}" name="employeeName">
+                            <input type="text" class="form-control" name="employeeName">
                         </div>
                         <div class="form-group">
                             <label>手机号码(用于登录)</label>
-                            <input type="text" class="form-control" value="${employee.employeeTel}" name="employeeTel">
+                            <input type="text" class="form-control" name="employeeTel">
                         </div>
                         <div class="form-group">
-                            <label>角色</label>
-                            <div>
-                                <c:forEach items="${roleList}" var="role">
-                                    <c:set var="flag" value="false"/>
-                                    <c:forEach items="${employeeRoleList}" var="empRole">
-                                        <c:if test="${role.id == empRole.id}">
-                                            <c:set var="flag" value="true"/>
-                                        </c:if>
-                                    </c:forEach>
-
-                                    <div class="checkbox-inline">
-                                        <input type="checkbox" value="${role.id}" name="roleIds" ${flag ? 'checked': ''}> ${role.roleName}
-                                    </div>
-                                </c:forEach>
-                            </div>
+                            <label>旧密码</label>
+                            <input type="password" class="form-control" name="password">
                         </div>
+                        <div class="form-group">
+                            <label>新密码</label>
+                            <input type="password" class="form-control" name="password">
+                        </div>
+
                     </form>
                 </div>
                 <div class="box-footer">
@@ -82,6 +69,11 @@
 <%@include file="../../include/js.jsp"%>
 <script>
     $(function () {
+        var message = "${message}";
+        if(message){
+            layer.msg(message);
+        }
+
         $("#saveBtn").click(function () {
             $(".saveForm").submit();
         });

@@ -217,6 +217,22 @@
                   employee_id = #{id}
           );
     </select>
+    <select id="findAllByAccountId" resultType="com.kaisheng.it.entity.Role">
+       SELECT
+            *
+        FROM
+            role
+        WHERE
+            id IN (
+                SELECT
+                    role_id
+                FROM
+                    employee_role
+                WHERE
+                    employee_id = #{employeeId}
+            )
+
+    </select>
 
     <update id="updateByExampleSelective" parameterType="map">
     update role

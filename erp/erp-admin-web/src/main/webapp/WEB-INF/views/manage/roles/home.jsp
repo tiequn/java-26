@@ -85,7 +85,7 @@
             var id = $(this).attr("rel");
             layer.confirm("确定要删除该角色？",function (index) {
                 layer.close(index);
-                $.get("/manage/roles/"+id+"/del").done(function (result) {
+                $.get("/manage/role/"+id+"/del").done(function (result) {
                     if(result.state == 'success') {
                         layer.msg("删除成功", {icon:2, time:1000},function () {
                             history.go(0);

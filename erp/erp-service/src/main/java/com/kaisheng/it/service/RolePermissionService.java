@@ -91,4 +91,18 @@ public interface RolePermissionService {
      * @return 有顺序的map集合  如果被选择则value为true
      */
     Map<Permission,Boolean> permissionBooleanMap(List<Permission> permissionList);
+
+    /**
+     * 根据对象ID查询所有的对应的角色
+     * @param id
+     * @return
+     */
+    List<Role> findRoleByAccountId(Integer id);
+
+    /**
+     * 根据roleId查询对应的权限
+     * @param id
+     * @return
+     */
+    List<Permission> findAllPermissionByRoleById(Integer id);
 }

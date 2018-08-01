@@ -118,13 +118,19 @@ public class RolePermissionServcieImpl implements RolePermissionService {
      */
     @Override
     public void permissionEdit(Permission permission) {
+        if(permission.getPermissionType().equals(Permission.PERMISSION_TYPE_MENU)){
+            permission.setPermissionType(Permission.PERMISSION_TYPE_BUTTON);
+        } else {
+            permission.setPermissionType(Permission.PERMISSION_TYPE_MENU);
+        }
+
         permissionMapper.updateByPrimaryKeySelective(permission);
+
         logger.debug("修改权限: {}", permission);
     }
 
     /**
      * 查询所有的带权限的角色列表
-     *
      * @return
      */
     @Override
@@ -188,7 +194,7 @@ public class RolePermissionServcieImpl implements RolePermissionService {
             rolePermission.setRoleId(role.getId());
             rolePermission.setPermissionId(permissionId);
 
-            rolePermissionMapper.insert(rolePermission);
+            rolePermissionMapper.insertSelective(rolePermission);
         }
     }
 
@@ -289,6 +295,28 @@ public class RolePermissionServcieImpl implements RolePermissionService {
             resultMap.put(permission,flag);
         }
         return resultMap;
+    }
+
+    /**
+     * 根据对象ID查询所有的对应的角色
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public List<Role> findRoleByAccountId(Integer id) {
+        return roleMapper.findAllByAccountId(id);
+    }
+
+    /**
+     * 根据roleId查询对应的权限
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public List<Permission> findAllPermissionByRoleById(Integer id) {
+        return permissionMapper.findAllByRoleId(id);
     }
 
 

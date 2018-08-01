@@ -33,7 +33,7 @@
     <!-- /.login-logo -->
 
     <div class="login-box-body">
-        <form action="/login" method="post" id="loginForm">
+        <form action="/" method="post" id="loginForm">
             <c:if test="${not empty message}">
                 <div class="alert alert-danger">${message}</div>
             </c:if>

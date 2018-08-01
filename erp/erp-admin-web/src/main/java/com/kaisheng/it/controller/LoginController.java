@@ -35,15 +35,21 @@ public class LoginController {
         return "home";
     }
 
-    @GetMapping("/login")
+   /* @GetMapping("/")
+    public String log(){
+
+        return "/home";
+    }*/
+
+    @GetMapping("/")
     public String login(){
 
         // 判断当前是否已经通过认证，如果通过则退出登录
         Subject subject = SecurityUtils.getSubject();
-
-        /*if(subject.isAuthenticated()){
+       /* if(subject.isAuthenticated()){
             subject.logout();
         }*/
+
         // 记住我返回首页
         if(subject.isRemembered()){
             return "home";
@@ -52,7 +58,7 @@ public class LoginController {
         return "login";
     }
 
-    @PostMapping("/login")
+    @PostMapping("/")
     public String login(String employeeTel,
                         String password,
                         String remember,
@@ -153,8 +159,8 @@ public class LoginController {
    @GetMapping("/401")
    public String unauthorizedUrl(){
 
-       return "error/401";
-   }
+        return "error/401";
+    }
 
 
 }
