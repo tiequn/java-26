@@ -68,7 +68,7 @@ public interface EmployeeService {
 
     /**
      * 根据电话号码查询账号对象
-     * @param userTel
+     * @param employeeTel 对象电话
      * @return
      */
     Employee findEmployeeByTel(String employeeTel);

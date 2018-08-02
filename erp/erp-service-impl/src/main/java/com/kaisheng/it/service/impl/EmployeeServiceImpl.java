@@ -104,6 +104,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         List<Employee> employeeList = employeeMapper.findAllAccountWithRolesByResultMap(resultMap);
 
+        // 查询所有员工 并去除当前登录账号
         Subject subject = SecurityUtils.getSubject();
         Session session = subject.getSession();
         Employee employee = (Employee) session.getAttribute("employee");
@@ -207,7 +208,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     /**
      * 根据电话号码查询账号对象
      *
-     * @param userTel
+     * @param employeeTel
      * @return
      */
     @Override

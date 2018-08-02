@@ -65,7 +65,7 @@ public class LoginController {
         Subject subject = SecurityUtils.getSubject();
         // 获得登录的IP
         String loginId = req.getRemoteAddr();
-        // 通过userTel、password封装UsernamePasswordToken对象进行登录
+        // 通过userTel、password封装UsernamePasswordToken对象进行登录 remeber != null 判断记住我是否打勾
         UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(employeeTel,DigestUtils.md5Hex(password), remember != null,loginId);
 
         try {

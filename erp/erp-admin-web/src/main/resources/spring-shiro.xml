@@ -58,7 +58,6 @@
         <!--访问没有权限的资源跳转的url-->
         <property name="unauthorizedUrl" value="/401"/>
 
-
        <!-- <property name="filterChainDefinitionMap" ref="filterChainDefinitionMap"/>-->
         <!--规则-->
         <!--<property name="filterChainDefinitions">
