@@ -184,18 +184,25 @@ public class RolePermissionServcieImpl implements RolePermissionService {
      */
     @Override
     @Transactional(rollbackFor = RuntimeException.class )
-    public void saveRole(Role role, Integer[] permissionIds) {
+    public void saveRole(Role role, Integer[] permissionIds) throws ServiceException {
         // 新增角色
         roleMapper.insertSelective(role);
 
-        // 新增角色权限关联关系
-        for (Integer permissionId : permissionIds){
-            RolePermission rolePermission = new RolePermission();
-            rolePermission.setRoleId(role.getId());
-            rolePermission.setPermissionId(permissionId);
+        if(permissionIds == null){
+            throw new ServiceException("请选择权限");
+        } else{
 
-            rolePermissionMapper.insertSelective(rolePermission);
+            // 新增角色权限关联关系
+            for (Integer permissionId : permissionIds){
+                RolePermission rolePermission = new RolePermission();
+                rolePermission.setRoleId(role.getId());
+                rolePermission.setPermissionId(permissionId);
+
+                rolePermissionMapper.insertSelective(rolePermission);
+            }
+
         }
+
     }
 
     /**

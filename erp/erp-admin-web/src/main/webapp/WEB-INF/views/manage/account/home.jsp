@@ -48,11 +48,11 @@
             <div class="box">
                 <div class="box-header">
                     <div class="box-tools">
-                      <%--  <shiro:hasPermission name="accont:add">--%>
+                        <shiro:hasPermission name="accont:add">
                         <a href="/manage/account/add" class="btn btn-success btn-sm">
                             <i class="fa fa-plus"></i> 新增账号
                         </a>
-                       <%-- </shiro:hasPermission>--%>
+                        </shiro:hasPermission>
                     </div>
                 </div>
                 <div class="box-body">
@@ -86,11 +86,15 @@
                                 <td>
                                     <c:choose>
                                         <c:when test="${employee.state == 1}">
+                                            <shiro:hasPermission name="employee:error">
                                             <a class="btn btn-warning btn-xs" rel="${employee.id}" href="/manage/account/${employee.id}/error" title="禁用"><i class="fa fa-lock"></i></a>
+                                            </shiro:hasPermission>
                                         </c:when>
 
                                         <c:otherwise>
+                                            <shiro:hasPermission name="employee:success">
                                             <a class="btn btn-warning btn-xs" rel="${employee.id}" href="/manage/account/${employee.id}/success" title="正常"><i class="fa fa-unlock"></i></a>
+                                            </shiro:hasPermission>
                                         </c:otherwise>
                                     </c:choose>
                                     <a class="btn btn-primary btn-xs" href="/manage/account/${employee.id}/edit"><i class="fa fa-edit"></i></a>

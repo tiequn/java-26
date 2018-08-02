@@ -24,7 +24,7 @@ public interface EmployeeService {
      * @param employee
      * @param roleIds
      */
-    void saveEmployee(Employee employee, Integer[] roleIds);
+    void saveEmployee(Employee employee, Integer[] roleIds) throws SecurityException;
 
     /**
      * 查找所有账户的角色
@@ -71,7 +71,7 @@ public interface EmployeeService {
      * @param userTel
      * @return
      */
-    Employee findEmployeeByTel(String userTel);
+    Employee findEmployeeByTel(String employeeTel);
 
     /**
      * 记录登录日志

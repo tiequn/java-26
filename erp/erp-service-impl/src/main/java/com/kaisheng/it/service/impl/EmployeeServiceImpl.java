@@ -3,6 +3,7 @@ package com.kaisheng.it.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.kaisheng.it.entity.*;
+import com.kaisheng.it.exception.ServiceException;
 import com.kaisheng.it.mapper.EmployeeLoginLogMapper;
 import com.kaisheng.it.mapper.EmployeeMapper;
 import com.kaisheng.it.mapper.EmployeeRoleMapper;
@@ -10,12 +11,16 @@ import com.kaisheng.it.mapper.RoleMapper;
 import com.kaisheng.it.service.EmployeeService;
 import com.kaisheng.it.util.Constant;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -58,7 +63,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
-    public void saveEmployee(Employee employee, Integer[] roleIds) {
+    public void saveEmployee(Employee employee, Integer[] roleIds) throws ServiceException{
         //对密码进行MD5加密
         String codePassword = DigestUtils.md5Hex(employee.getPassword());
         employee.setPassword(codePassword);
@@ -69,13 +74,19 @@ public class EmployeeServiceImpl implements EmployeeService {
         //添加账号和角色的对应关系表
         employeeMapper.insertSelective(employee);
 
-        for(Integer roleId : roleIds) {
-            EmployeeRole employeeRole = new EmployeeRole();
-            employeeRole.setEmployeeId(employee.getId());
-            employeeRole.setRoleId(roleId);
+        if(roleIds == null){
+            throw new ServiceException("请选择角色");
+        } else {
+            for(Integer roleId : roleIds) {
+                EmployeeRole employeeRole = new EmployeeRole();
+                employeeRole.setEmployeeId(employee.getId());
+                employeeRole.setRoleId(roleId);
 
-            employeeRoleMapper.insertSelective(employeeRole);
+                employeeRoleMapper.insertSelective(employeeRole);
+            }
+
         }
+
         logger.info("新增账号 {}", employee);
     }
 
@@ -92,6 +103,20 @@ public class EmployeeServiceImpl implements EmployeeService {
         PageHelper.startPage(pageNo, Constant.DEFAULT_PAGE_SIZE);
 
         List<Employee> employeeList = employeeMapper.findAllAccountWithRolesByResultMap(resultMap);
+
+        Subject subject = SecurityUtils.getSubject();
+        Session session = subject.getSession();
+        Employee employee = (Employee) session.getAttribute("employee");
+
+        Iterator<Employee> employeeIterable = employeeList.iterator();
+
+        while (employeeIterable.hasNext()){
+            Employee emp = employeeIterable.next();
+            if(emp.getEmployeeName().equals(employee.getEmployeeName())){
+                employeeIterable.remove();
+            }
+        }
+
         PageInfo<Employee> employeePageInfo = new PageInfo<>(employeeList);
 
         return employeePageInfo;
@@ -186,10 +211,10 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return
      */
     @Override
-    public Employee findEmployeeByTel(String userTel) {
+    public Employee findEmployeeByTel(String employeeTel) {
 
         EmployeeExample employeeExample = new EmployeeExample();
-        employeeExample.createCriteria().andEmployeeTelEqualTo(userTel);
+        employeeExample.createCriteria().andEmployeeTelEqualTo(employeeTel);
 
         List<Employee> employeeList = employeeMapper.selectByExample(employeeExample);
         if(employeeList != null && !employeeList.isEmpty()){

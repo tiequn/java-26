@@ -2,6 +2,7 @@ package com.kaisheng.it.service;
 
 import com.kaisheng.it.entity.Permission;
 import com.kaisheng.it.entity.Role;
+import com.kaisheng.it.exception.ServiceException;
 
 import java.util.List;
 import java.util.Map;
@@ -32,7 +33,7 @@ public interface RolePermissionService {
      * 删除权限
      * @param id
      */
-    void delPermission(Integer id);
+    void delPermission(Integer id) throws ServiceException;
 
     /**
      *根据id 修改
@@ -64,7 +65,7 @@ public interface RolePermissionService {
      * @param role
      * @param permissionIds
      */
-    void saveRole(Role role, Integer[] permissionIds);
+    void saveRole(Role role, Integer[] permissionIds) throws ServiceException;
 
     /**
      * 根据 id 删除角色

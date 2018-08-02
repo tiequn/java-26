@@ -36,7 +36,9 @@
                 <div class="box-header">
                     <h3 class="box-title">权限列表</h3>
                     <div class="box-tools">
+                        <shiro:hasPermission name="permission:new">
                         <a href="/manage/permission/new" class="btn btn-success btn-sm"><i class="fa fa-plus"></i> 新增权限</a>
+                        </shiro:hasPermission>
                     </div>
                 </div>
                 <div class="box-body">

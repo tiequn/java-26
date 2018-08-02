@@ -1,23 +1,22 @@
 package com.kaisheng.it.controller;
 
+import com.kaisheng.it.entity.Employee;
+import com.kaisheng.it.service.EmployeeService;
 import com.kaisheng.it.service.LoginService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.util.SavedRequest;
 import org.apache.shiro.web.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  * @author guojiabang
@@ -29,26 +28,23 @@ public class LoginController {
     @Autowired
     private LoginService loginService;
 
+    @Autowired
+    private EmployeeService employeeService;
+
     @GetMapping("/home")
     public String home(){
 
         return "home";
     }
 
-   /* @GetMapping("/")
-    public String log(){
-
-        return "/home";
-    }*/
-
     @GetMapping("/")
     public String login(){
 
         // 判断当前是否已经通过认证，如果通过则退出登录
         Subject subject = SecurityUtils.getSubject();
-       /* if(subject.isAuthenticated()){
+        if(subject.isAuthenticated()){
             subject.logout();
-        }*/
+        }
 
         // 记住我返回首页
         if(subject.isRemembered()){
@@ -76,7 +72,11 @@ public class LoginController {
             // 登录
             subject.login(usernamePasswordToken);
 
-            // 判断跳转路径
+            Employee employee = employeeService.findEmployeeByTel(employeeTel);
+            Session session = subject.getSession();
+            session.setAttribute("employee",employee);
+
+            // 判断跳转路径  跳转到登录前的请求页面
             SavedRequest savedRequest = WebUtils.getSavedRequest(req);
             String url = "/home";
             if(savedRequest != null){

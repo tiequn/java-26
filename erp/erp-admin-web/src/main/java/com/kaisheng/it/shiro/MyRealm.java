@@ -76,9 +76,9 @@ public class MyRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
 
         UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) authenticationToken;
-        String userTel = usernamePasswordToken.getUsername();
+        String employeeTel = usernamePasswordToken.getUsername();
 
-        Employee employee = employeeService.findEmployeeByTel(userTel);
+        Employee employee = employeeService.findEmployeeByTel(employeeTel);
 
 
         if(employee == null){

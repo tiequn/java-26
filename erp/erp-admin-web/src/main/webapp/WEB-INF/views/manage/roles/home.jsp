@@ -36,7 +36,9 @@
                 <div class="box-header">
                     <h3 class="box-title">角色列表</h3>
                     <div class="box-tools">
+                        <shiro:hasPermission name="role:new">
                         <a href="/manage/roles/new" class="btn btn-success btn-sm"><i class="fa fa-plus"></i> 新增角色</a>
+                        </shiro:hasPermission>
                     </div>
                 </div>
                 <div class="box-body">
@@ -79,6 +81,11 @@
 <script src="/static/plugins/layer/layer.js"></script>
 <script>
     $(function () {
+        var message = "${message}";
+        if(message){
+            layer.msg(message);
+        }
+
         $('.tree').treegrid();
         //删除
         $(".delLink").click(function () {

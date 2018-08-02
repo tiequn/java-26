@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Map;
@@ -42,8 +43,12 @@ public class RoleController {
     }
 
     @PostMapping("/new")
-    public String rolesNew(Role role,Integer[] permissionId){
-        rolePermissionService.saveRole(role, permissionId);
+    public String rolesNew(Role role, Integer[] permissionId, RedirectAttributes redirectAttributes)throws ServiceException{
+        try {
+            rolePermissionService.saveRole(role, permissionId);
+        } catch (ServiceException e) {
+            redirectAttributes.addFlashAttribute("message",e.getMessage());
+        }
         return "redirect:/manage/roles";
     }
 

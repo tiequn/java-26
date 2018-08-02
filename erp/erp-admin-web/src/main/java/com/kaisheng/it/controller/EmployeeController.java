@@ -5,9 +5,11 @@ import com.google.common.collect.Maps;
 import com.kaisheng.it.dto.ResponseBean;
 import com.kaisheng.it.entity.Employee;
 import com.kaisheng.it.entity.Role;
+import com.kaisheng.it.exception.ServiceException;
 import com.kaisheng.it.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -56,9 +58,12 @@ public class EmployeeController {
 
     @PostMapping("/add")
     public String addEmployee(Employee employee, Integer[] roleIds, RedirectAttributes redirectAttributes){
-        employeeService.saveEmployee(employee,roleIds);
-        redirectAttributes.addFlashAttribute("message","添加成功");
-
+        try {
+            employeeService.saveEmployee(employee,roleIds);
+            redirectAttributes.addFlashAttribute("message","添加成功");
+        } catch (ServiceException e) {
+            redirectAttributes.addFlashAttribute("message",e.getMessage());
+        }
         return "redirect:/manage/account";
     }
 
