@@ -58,4 +58,11 @@ public interface PartsService {
      * @return
      */
     PageInfo<Parts> findPageByPageNoAndQueryMap(Integer pageNo, Map<String, Object> queryMap);
+
+    /**
+     * 根据id查找配件列表
+     * @param id
+     * @return
+     */
+    List<Parts> findPartsByType(Integer id);
 }

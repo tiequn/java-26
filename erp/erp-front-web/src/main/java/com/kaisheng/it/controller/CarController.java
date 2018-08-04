@@ -24,19 +24,20 @@ public class CarController {
     private CarService carService;
 
     @PostMapping("/new")
-    public String newCarInfo(Car car, Customer customer, Model model){
+    @ResponseBody
+    public ResponseBean newCarInfo(Car car, Customer customer){
 
         carService.addCarIndo(car,customer);
+        car.setCustomer(customer);
 
-        model.addAttribute("car",car);
-        model.addAttribute("customer",customer);
-        return "order/new";
+        return ResponseBean.success(car);
     }
 
     @GetMapping("/check")
     @ResponseBody
     public ResponseBean checkCarInfo(String licenceNo){
 
+        // 根据车牌号码查询车辆信息
         Car car = carService.findCarInfoWithCustomer(licenceNo);
 
         if(car != null){

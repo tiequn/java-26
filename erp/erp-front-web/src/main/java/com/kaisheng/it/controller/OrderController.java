@@ -1,12 +1,19 @@
 package com.kaisheng.it.controller;
 
-import org.springframework.core.annotation.Order;
+import com.google.gson.Gson;
+import com.kaisheng.it.dto.ResponseBean;
+import com.kaisheng.it.entity.Parts;
+import com.kaisheng.it.entity.ServiceType;
+import com.kaisheng.it.entity.Type;
+import com.kaisheng.it.service.OrderService;
+import com.kaisheng.it.service.PartsService;
+import com.kaisheng.it.vo.OrderVo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.PostConstruct;
+import java.util.List;
+
 
 /**
  * @author guojiabang
@@ -15,6 +22,12 @@ import javax.annotation.PostConstruct;
 @Controller
 @RequestMapping("/order")
 public class OrderController {
+
+    @Autowired
+    private OrderService orderService;
+
+    @Autowired
+    private PartsService partsService;
 
     @GetMapping("/list")
     public String undoneList(){
@@ -29,10 +42,36 @@ public class OrderController {
     }
 
     @PostMapping("/new")
-    public String newOrder(Order order){
+    @ResponseBody
+    public ResponseBean newOrder(String json){
 
-        return "";
+        Gson gson = new Gson();
+        gson.fromJson(json,OrderVo.class);
+
+        return ResponseBean.success();
     }
 
+    @GetMapping("/service/types")
+    @ResponseBody
+    public ResponseBean serviceTypes(){
+        List<ServiceType> serviceTypeList = orderService.findAllSericeType();
+       return ResponseBean.success(serviceTypeList);
+
+    }
+
+    @GetMapping("/parts/types")
+    @ResponseBody
+    public ResponseBean partsTypes(){
+        List<Type> partsList = orderService.findAllPartsType();
+        return ResponseBean.success(partsList);
+
+    }
+
+    @GetMapping("/{id:\\d+}/parts")
+    @ResponseBody
+    public ResponseBean partsByType(@PathVariable Integer id){
+        List<Parts> partsList = partsService.findPartsByType(id);
+        return ResponseBean.success(partsList);
+    }
 
 }

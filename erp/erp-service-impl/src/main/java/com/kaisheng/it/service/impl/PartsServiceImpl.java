@@ -3,6 +3,7 @@ package com.kaisheng.it.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.kaisheng.it.entity.Parts;
+import com.kaisheng.it.entity.PartsExample;
 import com.kaisheng.it.entity.Type;
 import com.kaisheng.it.entity.TypeExample;
 import com.kaisheng.it.mapper.PartsMapper;
@@ -124,5 +125,18 @@ public class PartsServiceImpl implements PartsService {
 
         PageInfo<Parts> pageInfo = new PageInfo<>(partsList);
         return pageInfo;
+    }
+
+    /**
+     * 根据id查找配件列表
+     * @param id
+     * @return
+     */
+    @Override
+    public List<Parts> findPartsByType(Integer id) {
+        PartsExample partsExample = new PartsExample();
+        partsExample.createCriteria().andTypeIdEqualTo(id);
+        return partsMapper.selectByExample(partsExample);
+
     }
 }
