@@ -101,7 +101,7 @@
     values (#{id,jdbcType=INTEGER}, #{employeeId,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.kaisheng.it.entity.OrderEmployee">
+  <insert id="insertSelective" parameterType="com.kaisheng.it.entity.OrderEmployee" useGeneratedKeys="true" keyProperty="id">
     insert into order_employee
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

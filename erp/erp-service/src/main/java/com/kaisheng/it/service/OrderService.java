@@ -1,10 +1,14 @@
 package com.kaisheng.it.service;
 
+import com.github.pagehelper.PageInfo;
+import com.kaisheng.it.entity.Order;
 import com.kaisheng.it.entity.Parts;
 import com.kaisheng.it.entity.ServiceType;
 import com.kaisheng.it.entity.Type;
+import com.kaisheng.it.vo.OrderVo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author guojiabang
@@ -23,4 +27,17 @@ public interface OrderService {
      * @return
      */
     List<Type> findAllPartsType();
+
+    /**
+     * 新增订单
+     * @param orderVo
+     */
+    void saveOrder(OrderVo orderVo, Integer employeeId);
+
+    /**
+     * 通过参数查询订单
+     * @param queryMap
+     * @return
+     */
+    PageInfo<Order> findPageByParam(Map<String,Object> queryMap);
 }

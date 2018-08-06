@@ -48,7 +48,7 @@
             <div class="box">
                 <div class="box-header">
                     <div class="box-tools">
-                        <shiro:hasPermission name="accont:add">
+                        <shiro:hasPermission name="employee:add">
                         <a href="/manage/account/add" class="btn btn-success btn-sm">
                             <i class="fa fa-plus"></i> 新增账号
                         </a>

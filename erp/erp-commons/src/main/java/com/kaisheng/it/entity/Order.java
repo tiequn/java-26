@@ -8,6 +8,17 @@ import java.util.Date;
  * @author 
  */
 public class Order implements Serializable {
+
+    /**
+     * 订单状态:  1:待维修  2:维修中  3:质检中  4:结算中  5:完成
+     */
+    public static final String ORDER_STATE_NEW = "1";
+    public static final String ORDER_STATE_FIXING = "2";
+    public static final String ORDER_STATE_CHECKING = "3";
+    public static final String ORDER_STATE_SETTLEMENT = "4";
+    public static final String ORDER_STATE_DONE = "5";
+
+
     private Integer id;
 
     /**
@@ -35,7 +46,34 @@ public class Order implements Serializable {
      */
     private Integer serviceTypeId;
 
+    /**
+     * 订单车辆
+     */
+    private Car car;
+
+    /**
+     * 订单客户
+     */
+    private Customer customer;
+
     private static final long serialVersionUID = 1L;
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public Car getCar() {
+        return car;
+    }
+
+    public void setCar(Car car) {
+        this.car = car;
+    }
+
 
     public Integer getId() {
         return id;
@@ -134,4 +172,21 @@ public class Order implements Serializable {
         sb.append("]");
         return sb.toString();
     }
+
+    public String getStateName() {
+        //订单状态 1：新订单 2：维修中 3：质检中 4：结算中 5：完成
+        if(getState().equals(ORDER_STATE_NEW)) {
+            return "等待维修";
+        } else if(getState().equals(ORDER_STATE_FIXING)) {
+            return "维修中";
+        } else if(getState().equals(ORDER_STATE_CHECKING)) {
+            return "质检中";
+        } else if(getState().equals(ORDER_STATE_SETTLEMENT)) {
+            return "结算中";
+        } else if(getState().equals(ORDER_STATE_DONE)) {
+            return "完成";
+        }
+        return "";
+    }
+
 }

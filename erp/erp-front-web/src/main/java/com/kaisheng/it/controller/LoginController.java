@@ -69,22 +69,28 @@ public class LoginController {
         UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(employeeTel,DigestUtils.md5Hex(password), remember != null,loginId);
 
         try {
+
             // 登录
             subject.login(usernamePasswordToken);
 
-            Employee employee = employeeService.findEmployeeByTel(employeeTel);
-            Session session = subject.getSession();
-            session.setAttribute("employee",employee);
+            if(subject.hasRole("car:accpet")){
 
-            // 判断跳转路径  跳转到登录前的请求页面
-            SavedRequest savedRequest = WebUtils.getSavedRequest(req);
-            String url = "/home";
-            if(savedRequest != null){
-                // 获得callback的url
-                url = savedRequest.getRequestUrl();
+                Employee employee = employeeService.findEmployeeByTel(employeeTel);
+                Session session = subject.getSession();
+                session.setAttribute("employee",employee);
+
+                // 判断跳转路径  跳转到登录前的请求页面
+                SavedRequest savedRequest = WebUtils.getSavedRequest(req);
+                String url = "/home";
+                if(savedRequest != null){
+                    // 获得callback的url
+                    url = savedRequest.getRequestUrl();
+                }
+                return "redirect:" + url;
+            } else {
+                redirectAttributes.addFlashAttribute("message","您没有访问权限");
             }
 
-            return "redirect:" + url;
         }catch (UnknownAccountException |IncorrectCredentialsException e) {
             redirectAttributes.addFlashAttribute("message", "用户名或者密码错误");
         } catch (LockedAccountException e) {

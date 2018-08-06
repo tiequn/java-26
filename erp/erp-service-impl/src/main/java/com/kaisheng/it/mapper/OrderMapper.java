@@ -3,6 +3,8 @@ package com.kaisheng.it.mapper;
 import com.kaisheng.it.entity.Order;
 import com.kaisheng.it.entity.OrderExample;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface OrderMapper {
@@ -27,4 +29,6 @@ public interface OrderMapper {
     int updateByPrimaryKeySelective(Order record);
 
     int updateByPrimaryKey(Order record);
+
+    List<Order> findUndonePageByParam(Map<String, Object> queryMap);
 }
