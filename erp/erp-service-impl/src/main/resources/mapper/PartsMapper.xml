@@ -203,6 +203,21 @@
            order by p.inventory = #{inventory} desc
       </if>
     </select>
+
+
+    <select id="findPartsByOrderId" resultType="com.kaisheng.it.entity.Parts">
+        SELECT
+            parts.*,
+            order_parts.num
+        FROM
+            order_parts
+        INNER JOIN parts ON parts.id = order_parts.parts_id
+        WHERE
+            order_parts.order_id = #{id}
+
+    </select>
+
+
     <update id="updateByExampleSelective" parameterType="map">
     update parts
     <set>

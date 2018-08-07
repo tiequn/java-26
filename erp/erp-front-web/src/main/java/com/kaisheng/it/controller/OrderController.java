@@ -4,8 +4,10 @@ import com.github.pagehelper.PageInfo;
 import com.google.gson.Gson;
 import com.kaisheng.it.dto.ResponseBean;
 import com.kaisheng.it.entity.*;
+import com.kaisheng.it.exception.ServiceException;
 import com.kaisheng.it.service.OrderService;
 import com.kaisheng.it.service.PartsService;
+import com.kaisheng.it.vo.OrderInfoVo;
 import com.kaisheng.it.vo.OrderVo;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
 import java.util.List;
@@ -40,8 +43,8 @@ public class OrderController {
                              @RequestParam(required = false) String tel,
                              @RequestParam(required = false) String startTime,
                              @RequestParam(required = false) String endTime,
-                             Model model
-                             ){
+                             Model model){
+
         // 封装筛选querMap集合
         Map<String,Object> queryMap = new HashMap<>();
         queryMap.put("pageNo", pageNo);
@@ -64,8 +67,8 @@ public class OrderController {
                            @RequestParam(required = false) String tel,
                            @RequestParam(required = false) String startTime,
                            @RequestParam(required = false) String endTime,
-                           Model model
-    ){
+                           Model model){
+
         // 封装筛选querMap集合
         Map<String,Object> queryMap = new HashMap<>();
         queryMap.put("pageNo", pageNo);
@@ -125,6 +128,95 @@ public class OrderController {
     public ResponseBean partsByType(@PathVariable Integer id){
         List<Parts> partsList = partsService.findPartsByType(id);
         return ResponseBean.success(partsList);
+    }
+
+    @GetMapping("/{id:\\d+}/detail")
+    public String detail(@PathVariable Integer id, Model model){
+
+        //获取订单信息
+        Order order = orderService.findOrderWithCarByCustomerById(id);
+
+        // 获取订单配件列表
+        List<Parts> partsList = partsService.findPartsByOrderId(order.getId());
+
+        // 获取订单列表
+        ServiceType serviceType = orderService.findOrderWithServicerTypeByid(order.getServiceTypeId());
+
+        model.addAttribute("order",order);
+        model.addAttribute("partsList",partsList);
+        model.addAttribute("serviceType",serviceType);
+        return "order/detail";
+    }
+
+    @GetMapping("/{id:\\d+}/del")
+    public String delOrder(@PathVariable Integer id, RedirectAttributes redirectAttributes) throws ServiceException{
+
+        try {
+            orderService.delOrderById(id);
+            redirectAttributes.addFlashAttribute("message","删除成功");
+        } catch (ServiceException e) {
+            redirectAttributes.addFlashAttribute("message",e.getMessage());
+        }
+
+        return "redirect:/order/undone/list";
+    }
+
+    @GetMapping("/{id:\\d+}/trans")
+    public String orderTrans(@PathVariable Integer id, RedirectAttributes redirectAttributes){
+
+        orderService.findOrderByTrans(id);
+
+        redirectAttributes.addFlashAttribute("message","订单下发成功");
+        return "redirect:/order/undone/list";
+    }
+
+
+    @GetMapping("/{id:\\d+}/edit")
+    public String editOrder(@PathVariable Integer id, Model model){
+
+        model.addAttribute("orderId",id);
+        return "order/edit";
+    }
+
+    @GetMapping("/{id:\\d+}/info")
+    @ResponseBody
+    public ResponseBean orderInfo(@PathVariable Integer id){
+
+        try {
+            // 获取订单信息
+            Order order = orderService.findOrderWithCarByCustomerById(id);
+
+            // 获取订单服务类型信息
+            ServiceType serviceType = orderService.findOrderWithServicerTypeByid(order.getServiceTypeId());
+            // 获取订单配件列表
+            List<Parts> partsList = partsService.findPartsByOrderId(order.getId());
+
+            // 将订单传到前端展示订单数据的VO
+            OrderInfoVo orderInfoVo = new OrderInfoVo();
+            orderInfoVo.setOrder(order);
+            orderInfoVo.setPartsList(partsList);
+            orderInfoVo.setServiceType(serviceType);
+
+            return ResponseBean.success(orderInfoVo);
+        } catch (Exception e) {
+           ResponseBean.error(e.getMessage());
+        }
+        return null;
+    }
+
+    @PostMapping("/{id:\\d+}/edit")
+    @ResponseBody
+    public ResponseBean editOrder(String json){
+        // 将前端数据转化成对对象
+        Gson gson = new Gson();
+        OrderVo orderVo = gson.fromJson(json,OrderVo.class);
+
+        try {
+            orderService.editOrder(orderVo);
+        } catch (ServiceException e) {
+            return ResponseBean.error(e.getMessage());
+        }
+        return ResponseBean.success();
     }
 
 }

@@ -22,6 +22,15 @@ public class Parts {
 
     private Type type;
 
+    private Integer num;
+
+    public Integer getNum() {
+        return num;
+    }
+
+    public void setNum(Integer num) {
+        this.num = num;
+    }
 
     public Type getType() {
         return type;
@@ -107,6 +116,7 @@ public class Parts {
                 ", typeId=" + typeId +
                 ", address='" + address + '\'' +
                 ", type=" + type +
+                ", num=" + num +
                 '}';
     }
 }

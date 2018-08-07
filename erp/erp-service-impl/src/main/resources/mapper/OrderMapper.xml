@@ -212,8 +212,26 @@
       </if>
     </where>
     order by order.create_time desc
-
   </select>
+
+
+    <select id="findOrderWithCarByCustomerById" resultMap="orderMapWithDetail">
+        SELECT
+            `order`.*,
+            c.car_type,
+            c.licence_no,
+            c.car_no,
+            cu.user_name,
+            cu.tel,
+            cu.id_card
+        FROM
+            `order`
+        LEFT JOIN car c ON c.id = `order`.car_id
+        LEFT JOIN customer cu ON c.customer_id = cu.id
+        WHERE
+            `order`.id = #{id}
+    </select>
+
 
     <update id="updateByExampleSelective" parameterType="map">
     update `order`

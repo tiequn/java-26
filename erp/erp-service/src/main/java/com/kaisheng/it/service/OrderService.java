@@ -40,4 +40,36 @@ public interface OrderService {
      * @return
      */
     PageInfo<Order> findPageByParam(Map<String,Object> queryMap);
+
+    /**
+     * 查询订单，车辆，顾客信息
+     * @param id
+     * @return
+     */
+    Order findOrderWithCarByCustomerById(Integer id);
+
+    /**
+     * 获得订单服务类型
+     * @param serviceTypeId
+     * @return
+     */
+    ServiceType findOrderWithServicerTypeByid(Integer serviceTypeId);
+
+    /**
+     * 删除订单
+     * @param id
+     */
+    void delOrderById(Integer id) throws SecurityException;
+
+    /**
+     * 订单下发
+     * @param id
+     */
+    void findOrderByTrans(Integer id);
+
+    /**
+     * 更新订单
+     * @param orderVo
+     */
+    void editOrder(OrderVo orderVo);
 }

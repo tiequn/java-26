@@ -33,4 +33,6 @@ public interface PartsMapper {
     int updateByPrimaryKey(Parts record);
 
     List<Parts> findPageByPageNoAndQueryMap(Map<String,Object> queryMap);
+
+    List<Parts> findPartsByOrderId(Integer id);
 }

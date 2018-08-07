@@ -98,6 +98,11 @@
 <%@ include file="../include/js.jsp" %>
 <script>
     $(function(){
+        var message = "${message}";
+        if(message){
+            layer.msg(message);
+        }
+
         var startDate = "${param.startTime}";
         var endDate = "${param.endTime}";
         if(startDate && endDate) {
@@ -114,7 +119,7 @@
         });
         var locale = {
             "format": 'YYYY-MM-DD',
-            "separator": " - ",//
+            "separator": " - ",
             "applyLabel": "确定",
             "cancelLabel": "取消",
             "fromLabel": "起始时间",
