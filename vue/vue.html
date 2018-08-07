@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h4 v-bind:class="{active:isactive, btn: isBtn}">{{message}}--{{age}}</h4>
+        <br>
+        <span v-bind:title="message">鼠标移动</span>
+        <br>
+        <span v-if="flag">你好——> vue.js</span>
+        <p v-if="seen">Hello——————> 你好啊！</p>
+        <br>
+        <ol>
+            <li v-for="todo in address">{{todo}}</li>
+        </ol>
+        <br>
+        <button v-on:click="tryAgain">点我试试</button>
+       <br>
+        <!-- <span>{{htmlCode}}</span> -->
+        <span v-html="htmlCode"></span>
+        <br>
+        <input type="text" v-bind:disabled="dis">
+        <br>
+        <span>{{address.length}}--{{shanghaiLength}}</span>
+        <br>    
+        <div>{{fullName}}</div>
+        <input type="text" v-model="firstName">
+        <!-- <button @click="firstNameClick">firstName</button> -->
+        <button @click="lastNameClick">lastName</button>
+
+    </div>
+
+    <script src="js/vue.js"></script>
+    <script>
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            message: 'this is a vue app',
+            seen: '',
+            flag: '',
+            address: [],
+            age: '',
+            htmlCode:'<span style="color:red">鼠标停留</span>',
+            dis:true,
+            shanghaiLength:'',
+            firstName: 'Tom',
+            lastName: 'Hanks',
+            // fullName: 'dowan-->hanks',
+            isactive: false,
+            isBtn:true
+            
+        },
+        methods: {
+            tryAgain: function(){
+                this.message = 'Hello--->vue.js';
+                this.seen = true;
+                this.flag = true;
+                this.age = 12;
+                alert(this.message);
+
+                var adds = this.address;
+                var count = 0;
+                for(var i = 0; i < adds.length; i++){
+                    if(adds[i] == 'kaifeng') {
+                        count++;
+                    }
+                }
+                console.log(count);
+                this.shanghaiLength = count;
+
+            },
+            firstNameClick:function(){
+                this.firstName = 'alex'
+            },
+            lastNameClick:function(){
+                this.lastName = 'dowan'
+            },
+        },
+        mounted:function() {
+              
+            this.address = ['beijing','kaifeng','jiaozuo','kaifeng'];
+
+        },
+        computed:{
+            // shanghaiLength:function(){
+            //     var adds = this.address;
+            //     var count = 0;
+            //     for(var i = 0; i < adds.length; i++) {
+            //         if(adds[i] == 'kaifeng') {
+            //             count++;
+            //         }
+            //     }
+            //     return count;    
+            // },
+            fullName: function(){
+                return  this.firstName + " " + this.lastName;
+            }
+        },
+        // watch: {
+        //     firstName: function(val){
+        //         this.fullName = val + ' ' + this.lastName
+        //     },
+        //     lastName: function(val){
+        //         this.fullName = this.firstName  + ' ' + val
+        //     }
+        // }
+
+    })
+
+    
+    
+    </script>
+</body>
+</html>
