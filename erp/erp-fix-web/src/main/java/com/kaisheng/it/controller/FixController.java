@@ -15,7 +15,7 @@ public class FixController {
     @GetMapping("/list")
     public String fixList(){
 
-        return "/fix/list";  
+        return "/fix/list";
     }
 
 }

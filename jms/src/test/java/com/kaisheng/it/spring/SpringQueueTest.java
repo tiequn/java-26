@@ -18,7 +18,7 @@ import java.io.IOException;
  * @date 2018/8/7 0007
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:jms-spring-queue.xml")
+@ContextConfiguration(locations = "classpath:jms-spring-queue3.xml")
 public class SpringQueueTest {
 
     @Autowired

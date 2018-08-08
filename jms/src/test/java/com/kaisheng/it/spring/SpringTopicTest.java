@@ -11,7 +11,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
-import java.beans.ConstructorProperties;
 import java.io.IOException;
 
 /**
@@ -19,7 +18,7 @@ import java.io.IOException;
  * @date 2018/8/7 0007
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:jms-spring-queue.xml")
+@ContextConfiguration(locations = "classpath:jms-spring-topic2.xml")
 public class SpringTopicTest {
 
     @Autowired
