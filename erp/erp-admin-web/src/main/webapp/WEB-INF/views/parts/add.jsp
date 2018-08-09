@@ -53,7 +53,7 @@
                         </div>
                         <div class="form-group">
                             <label>进价:</label>
-                            <input type="text" name="inprice" id="inprice" class="form-control" placeholder="请输入进价">
+                            <input type="text" name="inPrice" id="inPrice" class="form-control" placeholder="请输入进价">
                         </div>
                         <div class="form-group">
                             <label>售价:</label>
@@ -95,6 +95,15 @@
 <%@ include file="../include/js.jsp" %>
 <script>
     $(function () {
+        var message= "${message}";
+        if(message){
+            layer.msg(message);
+        }
+
+        $("#save").click(function() {
+            $("#addForm").submit();
+        })
+
         $("#cancel").click(function () {
            window.location.href = "/parts"
         });
@@ -130,95 +139,6 @@
 
           });
         };
-
-
-
-
-            /*// validate 验证 需要添入jar
-            $(#addForm).validate({
-                errorElement: 'span',  // 验证错误信息
-                errorClass: 'text-danger',  // 验证类型
-                rules : {  // 规则
-                    partsNo:{
-                        required : true,     // required 必填字段 不填则不能提交
-                        remote : "/parts/check/partsNo"               // 如果可用，返回ture   这是异步请求
-                    },
-                    partsName:{
-                        required : true
-                    },
-                    inventory :{
-                        required : true
-                    },
-                    inPrice : {
-                        required : true
-                    },
-                    salePrice : {
-                        required : true
-                    },
-                    typeId : {
-                        required : true
-                    },
-                    address : {
-                        required : true
-                    },
-
-                },
-                messages : {   // 信息
-                    partsNo : {
-                        required : "请输入配件编号",
-                        remote : "该编号不可重复录入"     // false 时提示信息
-                    },
-                    partsName : {
-                        required : "请输入配件名名称"
-                    },
-                    inventory : {
-                        required : "请输入入库数量"
-                    },
-                    inPrice : {
-                        requires : "请输入进价"
-                    },
-                    salePrice : {
-                        required : "请输入售价"
-                    },
-                    typeId : {
-                        required : "请输选择类型"
-                    },
-                    address : {
-                        required : "请输入产地"
-                    },
-
-                    errorPlacement: function(error, element) {    //错误信息位置设置方法
-                        error.appendTo(element.parent());     //这里的element是录入数据的对象
-                    },
-                    submitHandler:function () {
-                        $.ajax({
-                            url : "/parts/add",
-                            type : "post",
-                            data : $("#addForm").serialize(),
-                            beforeSend :function () {
-                              $("#save").attr("disabled", "disabled").text("保存中...");
-                            },
-                            success:function () {
-                                if(res.state == "success"){
-                                    window.location.href = "/parts"
-                                }
-                            },
-                            error:function () {
-                                layer.alert("系统繁忙")
-                            },
-                            comPlete:function () {
-                                $(#save).removieAttr("disabled").text("保存");
-                            }
-
-                        })
-                    }
-
-
-
-                }
-
-            });*/
-
 
     })
 

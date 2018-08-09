@@ -6,6 +6,7 @@ import com.kaisheng.it.entity.Parts;
 import com.kaisheng.it.entity.PartsExample;
 import com.kaisheng.it.entity.Type;
 import com.kaisheng.it.entity.TypeExample;
+import com.kaisheng.it.exception.ServiceException;
 import com.kaisheng.it.mapper.PartsMapper;
 import com.kaisheng.it.mapper.TypeMapper;
 import com.kaisheng.it.service.PartsService;
@@ -104,8 +105,14 @@ public class PartsServiceImpl implements PartsService {
      */
     @Override
     public void saveParts(Parts parts) {
-        partsMapper.insertSelective(parts);
-        logger.debug("新增入库配件: {}", parts);
+        // 判断入库是否大于0
+        if(parts.getInventory() > 0){
+            partsMapper.insertSelective(parts);
+            logger.debug("新增入库配件: {}", parts);
+        } else{
+            throw new ServiceException("请正确填写入库数量");
+        }
+
     }
 
     /**

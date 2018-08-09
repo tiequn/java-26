@@ -3,6 +3,7 @@ package com.kaisheng.it.controller;
 import com.github.pagehelper.PageInfo;
 import com.kaisheng.it.entity.Parts;
 import com.kaisheng.it.entity.Type;
+import com.kaisheng.it.exception.ServiceException;
 import com.kaisheng.it.service.PartsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -103,10 +104,14 @@ public class PartsController {
 
     @PostMapping("/add")
     public String partsAdd(Parts parts, RedirectAttributes redirectAttributes){
-        partsService.saveParts(parts);
-        redirectAttributes.addFlashAttribute("message","入库成功");
+        try {
+            partsService.saveParts(parts);
+            redirectAttributes.addFlashAttribute("message","入库成功");
+            return "redirect:/parts";
+        } catch (Exception e) {
+            throw new ServiceException(e.getMessage());
+        }
 
-        return "redirect:/parts";
     }
 
     /*@GetMapping("/check/partsNo")
