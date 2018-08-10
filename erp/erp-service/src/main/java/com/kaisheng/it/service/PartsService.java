@@ -72,4 +72,11 @@ public interface PartsService {
      * @return
      */
     List<Parts> findPartsByOrderId(Integer id);
+
+    /**
+     * 减少库存
+     * @param json
+     */
+    void subInventory(String json);
+
 }

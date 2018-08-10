@@ -1,6 +1,7 @@
 package com.kaisheng.it.service.impl;
 
 import com.google.gson.Gson;
+import com.kaisheng.it.dto.FixOrderPartsVo;
 import com.kaisheng.it.dto.OrderInfoDto;
 import com.kaisheng.it.dto.OrderStateDto;
 import com.kaisheng.it.entity.*;
@@ -135,6 +136,36 @@ public class FixOrderServiceImpl implements FixOrderService {
         orderStateDto.setState(FixOrder.ORDER_STATE_FIXING);
 
         sendStateToMQ(orderStateDto);
+
+        // 减少库存 并记录当前员工
+        changePartsInventory(id, employee.getId());
+
+    }
+
+    /**
+     * 发送消息到消息队列通知库存管理减少对应配件的库存
+     * @param id
+     * @param employyeId
+     */
+    private void changePartsInventory(Integer id, Integer employyeId) {
+
+        // 根据id查询维修订单配件列表
+        FixOrderPartsExample fixOrderPartsExample = new FixOrderPartsExample();
+        fixOrderPartsExample.createCriteria().andOrderIdEqualTo(id);
+        List<FixOrderParts> fixOrderPartsList = fixOrderPartsMapper.selectByExample(fixOrderPartsExample);
+
+        FixOrderPartsVo fixOrderPartsVo = new FixOrderPartsVo();
+        fixOrderPartsVo.setEmployeeId(employyeId);
+        fixOrderPartsVo.setFixOrderPartsList(fixOrderPartsList);
+
+        String json = new Gson().toJson(fixOrderPartsVo);
+
+        jmsTemplate.send("partsNum-queue", new MessageCreator() {
+            @Override
+            public Message createMessage(Session session) throws JMSException {
+                return session.createTextMessage(json);
+            }
+        });
 
     }
 

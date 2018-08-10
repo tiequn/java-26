@@ -2,12 +2,12 @@ package com.kaisheng.it.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.kaisheng.it.entity.Parts;
-import com.kaisheng.it.entity.PartsExample;
-import com.kaisheng.it.entity.Type;
-import com.kaisheng.it.entity.TypeExample;
+import com.google.gson.Gson;
+import com.kaisheng.it.dto.FixOrderPartsVo;
+import com.kaisheng.it.entity.*;
 import com.kaisheng.it.exception.ServiceException;
 import com.kaisheng.it.mapper.PartsMapper;
+import com.kaisheng.it.mapper.PartsStreamMapper;
 import com.kaisheng.it.mapper.TypeMapper;
 import com.kaisheng.it.service.PartsService;
 import com.kaisheng.it.util.Constant;
@@ -33,6 +33,9 @@ public class PartsServiceImpl implements PartsService {
 
     @Autowired
     private TypeMapper typeMapper;
+
+    @Autowired
+    private PartsStreamMapper partsStreamMapper;
 
 
     /**
@@ -157,5 +160,37 @@ public class PartsServiceImpl implements PartsService {
 
         List<Parts> partsList = partsMapper.findPartsByOrderId(id);
         return partsList;
+    }
+
+    /**
+     * 减少库存
+     *
+     * @param json
+     */
+    @Override
+    public void subInventory(String json) {
+
+        FixOrderPartsVo fixOrderPartsVo = new Gson().fromJson(json,FixOrderPartsVo.class);
+        for (FixOrderParts fixOrderParts : fixOrderPartsVo.getFixOrderPartsList()){
+
+            // 更新库存
+            Parts parts = partsMapper.selectByPrimaryKey(fixOrderParts.getPartsId());
+            parts.setInventory(parts.getInventory() - fixOrderParts.getPartsNum());
+
+            partsMapper.updateByPrimaryKeySelective(parts);
+
+            // 生成出库流水
+            PartsStream partsStream = new PartsStream();
+            partsStream.setOrderId(fixOrderParts.getOrderId());
+            partsStream.setPartsId(fixOrderParts.getPartsId());
+            partsStream.setEmployeeId(fixOrderPartsVo.getEmployeeId());
+            partsStream.setNum(fixOrderParts.getPartsNum());
+            partsStream.setType(PartsStream.PARTS_STREAM_TYPE_OUT);
+
+            partsStreamMapper.insertSelective(partsStream);
+            logger.info("{} 配件出库", partsStream);
+
+        }
+
     }
 }
