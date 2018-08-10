@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>车管家ERP-维修保养</title>
+    <title>车管家ERP-质量检测</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <%@ include file="../include/css.jsp"%>
@@ -24,7 +24,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                维修部任务领取
+                质量检测
             </h1>
         </section>
 
@@ -42,9 +42,9 @@
                         <div class="panel panel-info">
                             <!-- Default panel contents -->
                             <div class="panel-heading">
-                                <a href="/fix/${fixOrder.orderId}/detail">订单号：${fixOrder.orderId}</a> - ${fixOrder.carType} - ${fixOrder.orderType}
-                                <c:if test="${fixOrder.state == '2'}">
-                                    <button rel="${fixOrder.orderId}" class="btn btn-success btn-sm pull-right receiveBtn">任务领取</button>
+                                <a href="/check/${fixOrder.orderId}/detail">订单号：${fixOrder.orderId}</a> - ${fixOrder.carType} - ${fixOrder.orderType}
+                                <c:if test="${fixOrder.state == '4'}">
+                                    <button rel="${fixOrder.orderId}" class="btn btn-success btn-sm pull-right receiveBtn">检测</button>
                                 </c:if>
 
                             </div>
@@ -77,10 +77,10 @@
     $(function(){
         $(".receiveBtn").click(function() {
             var orderId = $(this).attr("rel");
-            layer.confirm("确定接收该任务么？", function(){
-                $.get("/fix/" + orderId + "/receive",function (res) {
+            layer.confirm("确定检测吗？", function(){
+                $.get("/check/" + orderId + "/receive",function (res) {
                     if(res.state == "success") {
-                        window.location.href = "/fix/" + orderId + "/detail";
+                        window.location.href = "/check/" + orderId + "/detail";
                     } else {
                         layer.msg(res.message);
                     }

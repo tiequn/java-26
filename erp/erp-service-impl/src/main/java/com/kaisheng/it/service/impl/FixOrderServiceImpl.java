@@ -102,7 +102,7 @@ public class FixOrderServiceImpl implements FixOrderService {
     }
 
     /**
-     * 接收任务
+     * 接收维修任务
      * @param id
      * @param employee
      * @throws ServiceException 还有未完成的任务，不能接收新任务
@@ -112,7 +112,7 @@ public class FixOrderServiceImpl implements FixOrderService {
 
         // 判断当前员工是否有未完成的任务
         FixOrderExample fixOrderExample = new FixOrderExample();
-        fixOrderExample.createCriteria().andOrderIdEqualTo(id).andStateEqualTo(FixOrder.ORDER_STATE_FIXING);
+        fixOrderExample.createCriteria().andFixEmployeeIdEqualTo(id).andStateEqualTo(FixOrder.ORDER_STATE_FIXING);
         List<FixOrder> fixOrderList = fixOrderMapper.selectByExample(fixOrderExample);
 
         if(fixOrderList != null && fixOrderList.size() > 0){
@@ -158,8 +158,8 @@ public class FixOrderServiceImpl implements FixOrderService {
         fixOrderPartsVo.setEmployeeId(employyeId);
         fixOrderPartsVo.setFixOrderPartsList(fixOrderPartsList);
 
+        // 将对象转成json数据传输到mq中      发送订单状态到消息队列
         String json = new Gson().toJson(fixOrderPartsVo);
-
         jmsTemplate.send("partsNum-queue", new MessageCreator() {
             @Override
             public Message createMessage(Session session) throws JMSException {
@@ -199,6 +199,79 @@ public class FixOrderServiceImpl implements FixOrderService {
         orderStateDto.setOrderId(id);
 
         // 发送订单状态消息队列
+        sendStateToMQ(orderStateDto);
+
+    }
+
+    /**
+     * 查询待质检
+     * @return
+     */
+    @Override
+    public List<FixOrder> findFixOrderDetect() {
+        return fixOrderMapper.findOrderDetect();
+    }
+
+    /**
+     * 质检接收
+     * @param id
+     * @param employee
+     */
+    @Override
+    @Transactional(rollbackFor = RuntimeException.class)
+    public void receiveDetect(Integer id, Employee employee) throws ServiceException{
+
+        // 判断当前员工是否有未完成的任务
+        FixOrderExample fixOrderExample = new FixOrderExample();
+        fixOrderExample.createCriteria().andCheckEmployeeIdEqualTo(id).andStateEqualTo(FixOrder.ORDER_STATE_CHECKING);
+        List<FixOrder> fixOrderList = fixOrderMapper.selectByExample(fixOrderExample);
+        if(fixOrderList != null && fixOrderList.size() > 0){
+            throw new ServiceException("还有未完成任务，不能接受新任务");
+        }
+
+        // 查询维修订单并判断该订单是否为空空
+        FixOrder fixOrder = fixOrderMapper.selectByPrimaryKey(id);
+        if(fixOrder == null){
+            throw new ServiceException("参数错误或该订单不存在");
+        }
+
+        fixOrder.setState(FixOrder.ORDER_STATE_CHECKING);
+        fixOrder.setCheckEmployeeId(employee.getId());
+        fixOrder.setCheckEmployeeName(employee.getEmployeeName());
+
+        fixOrderMapper.updateByPrimaryKeySelective(fixOrder);
+
+        OrderStateDto orderStateDto = new OrderStateDto();
+        orderStateDto.setOrderId(id);
+        orderStateDto.setEmployeeId(employee.getId());
+        orderStateDto.setState(FixOrder.ORDER_STATE_CHECKING);
+
+        // 发送订单状态到消息队列
+        sendStateToMQ(orderStateDto);
+
+    }
+
+    /**
+     * 完成质检
+     * @param id
+     */
+    @Override
+    public void findDetectOrderById(Integer id) {
+
+        // 获取质检订单 并判断该订单是否为空
+        FixOrder fixOrder = fixOrderMapper.selectByPrimaryKey(id);
+        if(fixOrder == null){
+            throw new ServiceException("参数异常或该订单不存在");
+        }
+
+        fixOrder.setState(FixOrder.ORDER_STATE_CHECKED);
+        fixOrderMapper.updateByPrimaryKeySelective(fixOrder);
+
+        OrderStateDto orderStateDto = new OrderStateDto();
+        orderStateDto.setState(FixOrder.ORDER_STATE_CHECKED);
+        orderStateDto.setOrderId(id);
+
+        // 发送订单状态到消息队列
         sendStateToMQ(orderStateDto);
 
     }

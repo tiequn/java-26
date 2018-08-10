@@ -41,4 +41,23 @@ public interface FixOrderService {
      * @param id
      */
     void tackDone(Integer id);
+
+    /**
+     * 查询待质检
+     * @return
+     */
+    List<FixOrder> findFixOrderDetect();
+
+    /**
+     * 质检接收
+     * @param id
+     * @param employee
+     */
+    void receiveDetect(Integer id, Employee employee);
+
+    /**
+     * 完成质检
+     * @param id
+     */
+    void findDetectOrderById(Integer id);
 }
