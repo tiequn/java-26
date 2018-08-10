@@ -73,7 +73,7 @@ public class LoginController {
             // 登录
             subject.login(usernamePasswordToken);
 
-            if(subject.hasRole("car:accpet")){
+            if(subject.hasRole("fix:service")){
 
                 Employee employee = employeeService.findEmployeeByTel(employeeTel);
                 Session session = subject.getSession();

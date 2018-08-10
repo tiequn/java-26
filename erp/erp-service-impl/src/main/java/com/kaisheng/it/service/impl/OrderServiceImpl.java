@@ -2,6 +2,9 @@ package com.kaisheng.it.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.gson.Gson;
+import com.kaisheng.it.dto.OrderInfoDto;
+import com.kaisheng.it.dto.OrderStateDto;
 import com.kaisheng.it.entity.*;
 import com.kaisheng.it.exception.ServiceException;
 import com.kaisheng.it.mapper.*;
@@ -12,9 +15,15 @@ import com.kaisheng.it.vo.PartsVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
+import java.nio.channels.DatagramChannel;
 import java.util.List;
 import java.util.Map;
 
@@ -41,6 +50,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderPartsMapper orderPartsMapper;
+
+    @Autowired
+    private PartsMapper partsMapper;
+
+    @Autowired
+    JmsTemplate jmsTemplate;
 
 
     /**
@@ -166,11 +181,53 @@ public class OrderServiceImpl implements OrderService {
      * @param id
      */
     @Override
-    public void findOrderByTrans(Integer id) {
+    public void findOrderByTrans(Integer id)throws ServiceException {
         Order order = orderMapper.selectByPrimaryKey(id);
+        if(order == null){
+            throw new ServiceException("参数异常或订单不存在");
+        }
+
+        if(!order.getState().equals(Order.ORDER_STATE_NEW)){
+            throw new ServiceException("该订单已生成并下发,操作失败");
+        }
+
+        // 设置订单状态为已下发
         order.setState(Order.ORDER_STATE_TRANS);
         orderMapper.updateByPrimaryKeySelective(order);
 
+        // 订单下发后将订单消息发送到消息队列
+        sendOrderInfoToMq(id);
+
+    }
+
+    /**
+     * 发送订单详情信息到队列中
+     * @param id
+     */
+    private void sendOrderInfoToMq(Integer id) {
+        // 获得订单
+        Order order = orderMapper.findOrderWithCarByCustomerById(id);
+
+        // 获得订单服务类型信息
+        ServiceType serviceType = serviceTypeMapper.selectByPrimaryKey(order.getServiceTypeId());
+
+        // 获得订单配件列表
+        List<Parts> partsList = partsMapper.findPartsByOrderId(order.getId());
+
+        OrderInfoDto orderInfoDto = new OrderInfoDto();
+        orderInfoDto.setOrder(order);
+        orderInfoDto.setPartsList(partsList);
+        orderInfoDto.setServiceType(serviceType);
+
+        // 转成json发送到mq队列中
+        String json = new Gson().toJson(orderInfoDto);
+
+        jmsTemplate.send(new MessageCreator(){
+            @Override
+            public Message createMessage(Session session) throws JMSException {
+                return session.createTextMessage(json);
+            }
+        });
     }
 
     /**
@@ -214,8 +271,37 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
+     * 解析json数据改变订单状态
+     * @param json
+     */
+    @Override
+    @Transactional(rollbackFor = RuntimeException.class)
+    public void editOrderState(String json) {
+        OrderStateDto orderStateDto = new Gson().fromJson(json, OrderStateDto.class);
+        Order order = orderMapper.selectByPrimaryKey(orderStateDto.getOrderId());
+
+        if (order == null) {
+            logger.error("{}订单不存在", orderStateDto.getOrderId());
+        }
+
+        // 更改基础表的订单状态 并更新订单
+        order.setState(orderStateDto.getState());
+        orderMapper.updateByPrimaryKey(order);
+
+        // 新增订单操作员工
+        // 如果员工的employeeId==null 则代表员工订单关联关系不需要新增
+        if(orderStateDto.getEmployeeId() != null){
+            OrderEmployee orderEmployee = new OrderEmployee();
+            orderEmployee.setEmployeeId(orderStateDto.getEmployeeId());
+            orderEmployee.setOrderId(orderStateDto.getOrderId());
+
+            orderEmployeeMapper.insertSelective(orderEmployee);
+        }
+
+    }
+
+    /**
      * 新增订单和配件的关联关系表
-     *
      */
     private void addOrderParts(Integer orderId, List<PartsVo> partsVoList) {
         for (PartsVo partsVo : partsVoList){

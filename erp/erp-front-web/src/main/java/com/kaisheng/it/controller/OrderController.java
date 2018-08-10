@@ -162,12 +162,17 @@ public class OrderController {
     }
 
     @GetMapping("/{id:\\d+}/trans")
-    public String orderTrans(@PathVariable Integer id, RedirectAttributes redirectAttributes){
+    @ResponseBody
+    public ResponseBean orderTrans(@PathVariable Integer id, RedirectAttributes redirectAttributes){
 
-        orderService.findOrderByTrans(id);
+        try {
+            orderService.findOrderByTrans(id);
+            redirectAttributes.addFlashAttribute("message","订单下发成功");
+            return ResponseBean.success();
 
-        redirectAttributes.addFlashAttribute("message","订单下发成功");
-        return "redirect:/order/undone/list";
+        } catch (Exception e) {
+            return ResponseBean.error(e.getMessage());
+        }
     }
 
 

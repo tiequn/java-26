@@ -72,4 +72,10 @@ public interface OrderService {
      * @param orderVo
      */
     void editOrder(OrderVo orderVo);
+
+    /**
+     * 解析json数据改变订单状态
+     * @param json
+     */
+    void editOrderState(String json);
 }

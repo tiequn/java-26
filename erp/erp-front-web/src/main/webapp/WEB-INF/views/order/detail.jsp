@@ -201,11 +201,11 @@
 
         // 订单下发
         $("#transBtn").click(function () {
-            layer.close("确定要下发订单吗？如下发则不能删除修改",function (index) {
+            layer.confirm("确定要下发订单吗？如下发则不能删除修改",function (index) {
                 layer.close(index);
                 $.get("/order/"+ orderId +"/trans").done(function (res) {
                   if(res.state == "success"){
-                      layer.msg("订单已生成并下发！等待维修中...",{time: 2000, icon:1},function(){
+                      layer.msg("订单已生成并下发！等待维修中...",{time: 2000, icon: 1},function(){
                           history.go(0);
                       });
                   } else{

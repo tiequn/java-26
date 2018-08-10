@@ -6,6 +6,15 @@ package com.kaisheng.it.util;
  */
 public class Constant {
 
-    public static final Integer DEFAULT_PAGE_SIZE= 3;
+    /**
+     * 默认每页数量
+     */
+    public static final Integer DEFAULT_PAGE_SIZE = 3;
+
+    /**
+     * 每个工时费用
+     */
+    public static final Double DEFAULT_HOUR_FEE = 50.0;
+
 
 }

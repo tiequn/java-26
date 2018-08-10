@@ -172,6 +172,7 @@
       <result property="carNo" column="car_no"/>
       <result property="licenceNo" column="licence_no"/>
       <result property="carType" column="car_type"/>
+      <result property="color" column="color"/>
     </association>
     <association property="customer" javaType="com.kaisheng.it.entity.Customer">
       <id property="id" column="customer_id" />
@@ -223,7 +224,8 @@
             c.car_no,
             cu.user_name,
             cu.tel,
-            cu.id_card
+            cu.id_card,
+            c.color
         FROM
             `order`
         LEFT JOIN car c ON c.id = `order`.car_id
