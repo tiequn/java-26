@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <!-- 自定义服务名称 -->
+    <dubbo:application name="ConsumerService"/>
+
+   <!-- 服务注册中心的地址和端口 -->
+    <dubbo:registry address="zookeeper://192.168.1.123:2181"/>
+
+    <!-- 接受消息服务 -->
+    <dubbo:reference interface="com.kaishengit.service.ProviderService" id="rpcProviderService"/>
+
+
+</beans>
