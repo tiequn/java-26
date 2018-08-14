@@ -25,8 +25,6 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class LoginController {
 
-    @Autowired
-    private LoginService loginService;
 
     @Autowired
     private EmployeeService employeeService;

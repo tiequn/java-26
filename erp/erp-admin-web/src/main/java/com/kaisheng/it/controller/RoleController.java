@@ -5,7 +5,6 @@ import com.kaisheng.it.dto.ResponseBean;
 import com.kaisheng.it.entity.Permission;
 import com.kaisheng.it.entity.Role;
 import com.kaisheng.it.exception.ServiceException;
-import com.kaisheng.it.mapper.RoleMapper;
 import com.kaisheng.it.service.RolePermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

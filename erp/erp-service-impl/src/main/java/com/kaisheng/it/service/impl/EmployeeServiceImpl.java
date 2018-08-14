@@ -28,7 +28,6 @@ import java.util.Map;
  * @author guojiabang
  * @date 2018/7/29 0029
  */
-@Service
 public class EmployeeServiceImpl implements EmployeeService {
 
     Logger logger = LoggerFactory.getLogger(EmployeeServiceImpl.class);
@@ -104,7 +103,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         List<Employee> employeeList = employeeMapper.findAllAccountWithRolesByResultMap(resultMap);
 
-        // 查询所有员工 并去除当前登录账号
+       /* // 查询所有员工 并去除当前登录账号
         Subject subject = SecurityUtils.getSubject();
         Session session = subject.getSession();
         Employee employee = (Employee) session.getAttribute("employee");
@@ -116,7 +115,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             if(emp.getEmployeeName().equals(employee.getEmployeeName())){
                 employeeIterable.remove();
             }
-        }
+        }*/
 
         PageInfo<Employee> employeePageInfo = new PageInfo<>(employeeList);
 

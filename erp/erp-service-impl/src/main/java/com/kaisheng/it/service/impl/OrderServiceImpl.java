@@ -31,7 +31,6 @@ import java.util.Map;
  * @author guojiabang
  * @date 2018/8/4 0004
  */
-@Service
 public class OrderServiceImpl implements OrderService {
 
     Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
