@@ -1,8 +1,11 @@
 package com.kaisheng.it.entity;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class Parts {
+public class Parts implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Integer id;
 

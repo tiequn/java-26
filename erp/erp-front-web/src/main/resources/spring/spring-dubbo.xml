@@ -7,9 +7,11 @@
     <dubbo:application name="ErpDrontWeb"/>
 
     <!-- 注册中心 -->
-    <dubbo:registry address="zookeeper:192.168.1.125:2181"/>
+    <dubbo:registry address="zookeeper://192.168.1.125:2181"/>
 
     <!-- 接受信息 -->
+    <dubbo:reference interface="com.kaisheng.it.service.RolePermissionService" id="rolePermissionService"/>
+    <dubbo:reference interface="com.kaisheng.it.service.LoginService" id="loginService"/>
     <dubbo:reference interface="com.kaisheng.it.service.CarService" id="carService"/>
     <dubbo:reference interface="com.kaisheng.it.service.EmployeeService" id="employeeService"/>
     <dubbo:reference interface="com.kaisheng.it.service.OrderService" id="orderService"/>

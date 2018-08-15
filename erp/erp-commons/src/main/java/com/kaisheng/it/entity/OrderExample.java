@@ -1,11 +1,15 @@
 package com.kaisheng.it.entity;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class OrderExample {
+public class OrderExample  implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     protected String orderByClause;
 
     protected boolean distinct;
