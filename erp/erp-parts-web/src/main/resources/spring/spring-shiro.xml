@@ -22,18 +22,17 @@
         <property name="realm" ref="myRealm"/>
         <property name="rememberMeManager" ref="rememberMeManager"/>
     </bean>
+
     <!--2.配置缓存管理器-->
     <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
         <property name="cacheManagerConfigFile" value="classpath:ehcache.xml"/>
     </bean>
-    <!--3.配置自定义的realm-->
-    <bean id="myRealm" class="com.kaisheng.it.shiro.MyRealm">
 
-    </bean>
+    <!--3.配置自定义的realm-->
+    <bean id="myRealm" class="com.kaisheng.it.shiro.MyRealm"></bean>
 
     <!--配置生命周期管理器-->
     <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
-
 
     <bean id="filterChainDefinitionMap" class="com.kaisheng.it.shiro.CustomerFilterChainDefinition">
         <property name="shiroFilter" ref="shiroFilter"/>
