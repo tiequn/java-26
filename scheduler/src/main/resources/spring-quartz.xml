@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 定义任务类 -->
+    <bean id="mySpringQuartz" class="com.kaishengit.springQuartz.MySpringQuartzJob"/>
+
+    <!-- 定义调用对象方法 -->
+    <bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="mySpringQuartz"/>
+        <property name="targetMethod" value="run"/>
+    </bean>
+
+    <!-- 定义Trigger -->
+    <bean id="cronTriggerBean" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="jobDetail"/>
+        <property name="cronExpression" value="0 31 22 16 8 ? 2018"/>
+    </bean>
+
+    <!-- 调度器 -->
+    <bean id="scheduler" lazy-init="false" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="cronTriggerBean"/>
+            </list>
+        </property>
+    </bean>
+
+
+</beans>
