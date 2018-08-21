@@ -33,4 +33,6 @@ public interface OrderMapper {
     List<Order> findUndonePageByParam(Map<String, Object> queryMap);
 
     Order findOrderWithCarByCustomerById(Integer id);
+
+    List<Order> findDailyOrderBySate(@Param("state") String state, @Param("dateTime") String dateTime);
 }

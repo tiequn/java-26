@@ -7,7 +7,7 @@
     <dubbo:application name="ErpFixWeb"/>
 
     <!-- 服务注册中心的地址和端口 -->
-    <dubbo:registry address="zookeeper://192.168.1.125:2181"/>
+    <dubbo:registry address="zookeeper://192.168.1.123:2181"/>
 
     <!-- 接受服务 -->
     <dubbo:reference interface="com.kaisheng.it.service.RolePermissionService" id="rolePermissionService"/>

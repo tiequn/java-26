@@ -6,13 +6,19 @@ import com.kaisheng.it.dto.OrderInfoDto;
 import com.kaisheng.it.dto.OrderStateDto;
 import com.kaisheng.it.entity.*;
 import com.kaisheng.it.exception.ServiceException;
+import com.kaisheng.it.mapper.CountTimeoutMapper;
 import com.kaisheng.it.mapper.FixOrderMapper;
 import com.kaisheng.it.mapper.FixOrderPartsMapper;
+import com.kaisheng.it.quartz.CheckFixTimeOut;
 import com.kaisheng.it.service.FixOrderService;
 import com.kaisheng.it.util.Constant;
+import org.joda.time.DateTime;
+import org.quartz.*;
+import org.quartz.spi.TriggerFiredBundle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
+import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +42,12 @@ public class FixOrderServiceImpl implements FixOrderService {
 
     @Autowired
     private JmsTemplate jmsTemplate;
+
+    @Autowired
+    private SchedulerFactoryBean schedulerFactoryBean;
+
+    @Autowired
+    private CountTimeoutMapper countTimeoutMapper;
 
     /**
      * 将队列中的数据解析生成维修订单
@@ -126,7 +138,6 @@ public class FixOrderServiceImpl implements FixOrderService {
         fixOrder.setState(FixOrder.ORDER_STATE_FIXING);
         fixOrder.setFixEmployeeId(employee.getId());
         fixOrder.setFixEmployeeName(employee.getEmployeeName());
-
         fixOrderMapper.updateByPrimaryKeySelective(fixOrder);
 
         OrderStateDto orderStateDto = new OrderStateDto();
@@ -138,6 +149,52 @@ public class FixOrderServiceImpl implements FixOrderService {
 
         // 减少库存 并记录当前员工
         changePartsInventory(id, employee.getId());
+        // 添加超时任务
+        setFixOrderTimeOutTask(id,employee.getId(), Integer.parseInt(fixOrder.getOrderServiceHour()));
+
+    }
+
+    /**
+     * 添加超时的定时任务
+     * @param orderId
+     * @param employeeId
+     */
+    private void setFixOrderTimeOutTask(Integer orderId, Integer employeeId, Integer serviceHour) {
+
+        // 创建任务调度器
+        Scheduler scheduler = schedulerFactoryBean.getScheduler();
+
+        try {
+            // 创建一个JobDetail实例，指定Quartz          任务执行类
+            JobDetail jobDetail = JobBuilder.newJob(CheckFixTimeOut.class)
+                     // 任务名，任务组
+                    .withIdentity("fix:" + orderId + "-" + employeeId + "fixOrder")
+                    .build();
+
+            DateTime dateTime = new DateTime();
+            // 小时
+            // dateTime.plusHours(serviceHour);
+            // 分钟
+            dateTime = dateTime.plusMinutes(serviceHour);
+
+            //  cron表达式 0 34 12 19 8 ? 2018
+            String cronExpression = dateTime.getSecondOfMinute() + " "
+                    + dateTime.getMinuteOfHour() + " "
+                    + dateTime.getHourOfDay() + " "
+                    + dateTime.getDayOfMonth() + " "
+                    + dateTime.getMonthOfYear() + " ? "
+                    + dateTime.getYear();
+
+            // 创建 Trigger
+            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(cronExpression);
+            Trigger trigger = TriggerBuilder.newTrigger().withSchedule(scheduleBuilder).build();
+
+            // 任务调度执行
+            scheduler.scheduleJob(jobDetail,trigger);
+            scheduler.start();
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -199,6 +256,34 @@ public class FixOrderServiceImpl implements FixOrderService {
 
         // 发送订单状态消息队列
         sendStateToMQ(orderStateDto);
+
+        // 删除检测超时的定时器任务
+        Scheduler scheduler = schedulerFactoryBean.getScheduler();
+        try {
+            scheduler.deleteJob(new JobKey("fix:" + fixOrder.getOrderId() + "-" + fixOrder.getFixEmployeeId(), "fixOrder"));
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * 添加超时数据
+     * @param jobName
+     */
+    @Override
+    public void addFixOrderTimeout(String jobName) {
+
+        // 将spring转为Integer split截取
+        Integer orderId = Integer.valueOf(jobName.split(":")[1].split("-")[0]);
+        Integer employeeId = Integer.valueOf(jobName.split(":")[1].split("-")[0]);
+
+        // 添加countTimeout
+        CountTimeout countTimeout = new CountTimeout();
+        countTimeout.setEmployeeId(employeeId);
+        countTimeout.setOrderId(orderId);
+
+        countTimeoutMapper.insertSelective(countTimeout);
 
     }
 

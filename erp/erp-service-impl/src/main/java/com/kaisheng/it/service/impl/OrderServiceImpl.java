@@ -12,18 +12,20 @@ import com.kaisheng.it.service.OrderService;
 import com.kaisheng.it.util.Constant;
 import com.kaisheng.it.vo.OrderVo;
 import com.kaisheng.it.vo.PartsVo;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
-import java.nio.channels.DatagramChannel;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -54,8 +56,10 @@ public class OrderServiceImpl implements OrderService {
     private PartsMapper partsMapper;
 
     @Autowired
-    JmsTemplate jmsTemplate;
+    private JmsTemplate jmsTemplate;
 
+    @Autowired
+    private CountDailyMapper countDailyMapp;
 
     /**
      * 查询所有类型
@@ -298,6 +302,48 @@ public class OrderServiceImpl implements OrderService {
         }
 
     }
+
+    /**
+     * 统计每天的订单数量和金额
+     */
+    @Override
+    public void countDailyOrder() {
+        DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd");
+
+        // 1.获取做昨天的所有以完成的订单
+        // 1.1获取当前时间
+        DateTime dt = new DateTime();
+        // 1.2 当前时间减去一天获取昨天时间
+        dt = dt.minusDays(1);
+        // 1.3 格式化日期并转为String
+        String dateTime = fmt.print(dt);
+        // 1.4 获得昨天的数据
+        List<Order> orderList = orderMapper.findDailyOrderBySate(Order.ORDER_STATE_DONE,dateTime);
+        if(orderList != null && orderList.size() > 0){
+            // 根据所有订单获取当天订单
+            CountDaily countDaily = new CountDaily();
+            countDaily.setSumnum(orderList.size());
+            countDaily.setDateTime(dateTime);
+
+            // 统计昨天订单金额
+            BigDecimal bigDecimal = BigDecimal.ZERO;
+            for (Order order : orderList){
+                bigDecimal = bigDecimal.add(order.getOrderMoney());
+            }
+            countDaily.setSumminey(bigDecimal);
+            // 添加数据库
+            countDailyMapp.insertSelective(countDaily);
+
+        } else{
+            CountDaily countDaily = new CountDaily();
+            countDaily.setDateTime(dateTime);
+            // 添加数据库
+            countDailyMapp.insertSelective(countDaily);
+
+        }
+        logger.debug("统计{}的订单数据",dateTime);
+    }
+
 
     /**
      * 新增订单和配件的关联关系表

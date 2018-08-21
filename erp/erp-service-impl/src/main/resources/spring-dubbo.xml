@@ -7,10 +7,10 @@
     <dubbo:application name="ErpServiceProvider"/>
 
     <!-- 注册中心地址 -->
-    <dubbo:registry address="zookeeper://192.168.1.125:2181"/>
+    <dubbo:registry address="zookeeper://192.168.1.123:2181"/>
 
     <!-- dubbo的协议和端口 添加host可以指定使用的网卡 -->
-    <dubbo:protocol host="192.168.1.126" port="20880"/>
+  <!--  <dubbo:protocol host="192.168.1.126" port="20880"/>-->
 
     <!-- 暴露服务 -->
     <bean id="carService" class="com.kaisheng.it.service.impl.CarServiceImpl"/>
