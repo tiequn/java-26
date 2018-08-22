@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:redisson="http://redisson.org/schema/redisson"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://redisson.org/schema/redisson
+        http://redisson.org/schema/redisson/redisson.xsd">
+
+        <!-- 单台redis机器配置 -->
+    <redisson:client id="redissonClient">
+        <redisson:single-server address="redis://192.168.1.124:6379"/>
+    </redisson:client>
+
+    <!-- redis集群配置 -->
+    <!--<redisson:client id="redissonClient" >
+        <redisson:cluster-servers scan-interval="10000">   &lt;!&ndash; //scan-interval:集群状态扫描间隔时间，单位是毫秒 &ndash;&gt;
+            <redisson:node-address value="192.168.2.100:7000"></redisson:node-address>
+        </redisson:cluster-servers>
+    </redisson:client>-->
+
+
+</beans>
