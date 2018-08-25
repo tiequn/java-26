@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+
+    <h3>Hello,SpringBoot</h3>
+
+    <h1 th:text="${name}">tom</h1>
+    <h1 th:text="${param.p}"></h1>
+    <h1>Hello,[[${name}]]</h1>
+
+    <h3 th:if="${age != 23}">Hello,23</h3>
+    <th:block th:if="${age==23}">
+        <h3>aa</h3>
+        <h3>bb</h3>
+    </th:block>
+
+    <ul>
+        <li th:if="${#lists.isEmpty(nameList)}">暂无数据</li>
+        <li th:each="name : ${nameList}" th:text="${name}"></li>
+        <li th:each="name,iterStat : ${nameList}" th:text="${iterStat.count + '->' + name}"></li>
+    </ul>
+
+
+
+</body>
+</html>

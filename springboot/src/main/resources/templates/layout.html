@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">CRM系统</title>
+    <script src="/js/jquery.min.js"></script>
+</head>
+<body>
+
+   <div id="header">
+        <h1>CRM管理系统</h1>
+       <link rel="stylesheet" href="/css/bootstrap.min.css">
+   </div>
+
+    <div id="content" layout:fragment="content">
+
+    </div>
+
+    <div class="footer">
+        @2018 kaishengit
+    </div>
+   <script layout:fragment="js"></script>
+
+</body>
+</html>

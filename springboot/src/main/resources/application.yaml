@@ -1,0 +1,44 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql:///atm
+    username: root
+    password: root
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+#  redis:
+#    host: 192.168.1.122
+#    port: 6379
+#    pool:
+#      max-wait: 1000
+#      max-idle: 10
+#      min-idle: 5
+  redisson:
+    host: redis://192.168.1.122:6379
+    timeout: 5000
+  activemq:
+    broker-url: tcp://localhost:61616
+  jms:
+    listener:
+      acknowledge-mode: client
+      concurrency: 3
+      max-concurrency: 10
+mybatis:
+  type-aliases-package: com.kaishengit.entity
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath:mapper/*.xml
+logging:
+  level:
+    com:
+      kaishengit:
+        mapper: debug
+  path: G:/temp/log/spring.log
+  #file: G:/temp/spring.log
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
