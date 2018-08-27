@@ -8,13 +8,13 @@ spring:
     hikari:
       maximum-pool-size: 10
       minimum-idle: 5
-#  redis:
-#    host: 192.168.1.122
-#    port: 6379
-#    pool:
-#      max-wait: 1000
-#      max-idle: 10
-#      min-idle: 5
+  redis:
+    host: 192.168.1.122
+    port: 6379
+    pool:
+      max-wait: 1000
+      max-idle: 10
+      min-idle: 5
   redisson:
     host: redis://192.168.1.122:6379
     timeout: 5000
@@ -25,6 +25,9 @@ spring:
       acknowledge-mode: client
       concurrency: 3
       max-concurrency: 10
+  cache:
+    ehcache:
+      config: classpath:ehcache.xml
 mybatis:
   type-aliases-package: com.kaishengit.entity
   configuration:
@@ -42,3 +45,7 @@ pagehelper:
   reasonable: true
   supportMethodsArguments: true
   params: count=countSql
+redis:
+  expires:
+    user: 10
+    book: 100

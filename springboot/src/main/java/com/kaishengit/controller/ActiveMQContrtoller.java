@@ -34,11 +34,11 @@ public class ActiveMQContrtoller {
         return "success";
     }
 
-    @GetMapping("/toqueue")
+    /*@GetMapping("/toqueue")
     public void sendUserToQueue(){
 
         TUser tUser = new TUser("tom","jz");
         jmsTemplate.convertAndSend("springBoot-user",tUser);
-    }
+    }*/
 
 }

@@ -106,11 +106,4 @@ public class TUser implements Serializable {
         return sb.toString();
     }
 
-    public TUser(String tom, String jz){
-
-    }
-    public TUser(String userName,String address, String password){
-
-    }
-
 }

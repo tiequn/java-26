@@ -49,7 +49,7 @@ public class ActiveMQConfig {
      * 重试机制
      * @return
      */
-    @Bean
+   /* @Bean
     public ActiveMQConnectionFactory activeMQConnectionFactory(){
 
         RedeliveryPolicy redeliveryPolicy = new RedeliveryPolicy();
@@ -68,11 +68,11 @@ public class ActiveMQConfig {
 
     }
 
-    /**
+    *//**
      * 发送Java对象到消息队列中
      * 定义消息转换器
      * @return
-     */
+     *//*
     @Bean
     public MessageConverter jacksonMessageConverter(){
 
@@ -81,7 +81,7 @@ public class ActiveMQConfig {
         messageConverter.setTypeIdPropertyName("_type");
 
         return messageConverter;
-    }
+    }*/
 
 
 }

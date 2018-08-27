@@ -5,9 +5,7 @@ import com.kaishengit.entity.TUser;
 import com.kaishengit.entity.TUserExample;
 import com.kaishengit.mapper.TUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -15,7 +13,7 @@ import java.util.List;
  * @author guojiabang
  * @date 2018/8/23 0023
  */
-@Controller
+@RestController
 public class TUserController {
 
     @Autowired
@@ -33,5 +31,8 @@ public class TUserController {
         List<TUser> tUserList = tUserMapper.selectByExample(new TUserExample());
         return tUserList;
     }
+
+
+
 
 }
