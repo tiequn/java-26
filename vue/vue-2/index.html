@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+    <div id="app">
+        {{ message }}
+        <h3>name: {{ name }}</h3>
+        <h3>age: {{ age }}</h3>
+        <p v-if="seen">你看见了我吗?</p>
+        <input type="text" v-model="message">
+        <ul>
+            <li v-for="item in items">{{ item.title }}</li>
+        </ul>
+        <button v-on:click="doThing">click Me</button>
+    </div>
+
+    <script src="js/vue.js"></script>
+    <script>
+        new Vue({
+            el: "#app",
+            data: {
+                message: "Hello vue",
+                seen: true,
+                name: '',
+                age: '',
+                items: [
+                    {title: "Hello 杭州"},
+                    {title: "Hello 上海"},
+                    {title: "Hello 深圳"}
+                ]
+            },
+            methods: {
+                doThing: function(){
+                    //alert("Hello  click")
+                    this.name = 'tom',
+                    this.age = '23'
+                }
+            }
+        })
+    
+    </script>
+
+
+</body>
+</html>
