@@ -3,8 +3,11 @@ package com.kaishengit.tms.mapper;
 import com.kaishengit.tms.entity.TicketStore;
 import com.kaishengit.tms.entity.TicketStoreExample;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+@Mapper
 public interface TicketStoreMapper {
     long countByExample(TicketStoreExample example);
 

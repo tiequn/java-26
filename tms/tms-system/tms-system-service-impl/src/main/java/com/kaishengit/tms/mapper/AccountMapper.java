@@ -3,8 +3,12 @@ package com.kaishengit.tms.mapper;
 import com.kaishengit.tms.entity.Account;
 import com.kaishengit.tms.entity.AccountExample;
 import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+@Mapper
 public interface AccountMapper {
     long countByExample(AccountExample example);
 
@@ -27,4 +31,6 @@ public interface AccountMapper {
     int updateByPrimaryKeySelective(Account record);
 
     int updateByPrimaryKey(Account record);
+
+    List<Account> findAllWithRolesByQueryParam(Map<String, Object> requestParam);
 }

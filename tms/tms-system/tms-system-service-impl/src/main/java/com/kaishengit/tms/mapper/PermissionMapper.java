@@ -3,8 +3,11 @@ package com.kaishengit.tms.mapper;
 import com.kaishengit.tms.entity.Permission;
 import com.kaishengit.tms.entity.PermissionExample;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+@Mapper
 public interface PermissionMapper {
     long countByExample(PermissionExample example);
 
@@ -27,4 +30,6 @@ public interface PermissionMapper {
     int updateByPrimaryKeySelective(Permission record);
 
     int updateByPrimaryKey(Permission record);
+
+    List<Permission> findAllPermissionByRolesId(Integer rolesId);
 }

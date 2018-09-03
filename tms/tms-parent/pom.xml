@@ -21,20 +21,20 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <distributionManagement>
-        <!--快照版本-->
+    <!--<distributionManagement>
+        &lt;!&ndash;快照版本&ndash;&gt;
         <snapshotRepository>
             <id>tms-snapshot</id>
             <url>http://192.168.1.123:8081/repository/tms-snapshot/</url>
         </snapshotRepository>
-        <!--正式版本-->
+        &lt;!&ndash;正式版本&ndash;&gt;
         <repository>
             <id>tms-release</id>
             <url>http://192.168.1.123:8081/repository/tms-release/</url>
         </repository>
-    </distributionManagement>
+    </distributionManagement>-->
 
-    <dependencyManagement>
+    <!--<dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
@@ -44,10 +44,10 @@
                 <scope>import</scope>
             </dependency>
         </dependencies>
-    </dependencyManagement>
+    </dependencyManagement>-->
 
     <!--开发阶段使用snapshot的最新版本-->
-    <repositories>
+    <!--<repositories>
         <repository>
             <id>tms</id>
             <name>tms_group</name>
@@ -60,7 +60,7 @@
                 <updatePolicy>always</updatePolicy>
             </snapshots>
         </repository>
-    </repositories>
+    </repositories>-->
 
 
 </project>

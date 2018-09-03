@@ -3,8 +3,11 @@ package com.kaishengit.tms.mapper;
 import com.kaishengit.tms.entity.AccountLoginLog;
 import com.kaishengit.tms.entity.AccountLoginLogExample;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+@Mapper
 public interface AccountLoginLogMapper {
     long countByExample(AccountLoginLogExample example);
 

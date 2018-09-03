@@ -10,6 +10,7 @@ import com.kaishengit.tms.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 系统账号的业务类
@@ -51,5 +52,16 @@ public class AccountServiceIMpl implements AccountService {
     public void saveAccountLoginLog(AccountLoginLog accountLoginLog) {
        accountLoginLogMapper.insertSelective(accountLoginLog);
 
+    }
+
+    /**
+     * 根据UI传来的查询参数查询所有账号并加载对应的角色列表
+     *
+     * @param requestParam
+     * @return
+     */
+    @Override
+    public List<Account> findAllAccountWithRolesByQueryParam(Map<String, Object> requestParam) {
+        return accountMapper.findAllWithRolesByQueryParam(requestParam);
     }
 }

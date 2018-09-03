@@ -156,7 +156,25 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+
+  <select id="findRolesByAccountId" resultType="com.kaishengit.tms.entity.Roles">
+    SELECT
+        *
+      FROM
+          roles
+      WHERE
+          id IN (
+              SELECT
+                  roles_id
+              FROM
+                  account_roles
+              WHERE
+                  account_id = #{accountId}
+          )
+
+  </select>
+
+    <update id="updateByExampleSelective" parameterType="map">
     update roles
     <set>
       <if test="record.id != null">

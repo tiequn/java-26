@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 
 /**
  * @author guojiabang
@@ -23,23 +22,23 @@ public class JavaConfig {
         return new ShiroRealm();
     }
 
-    public CustomerFilterChainDefinition customerFilterChainDefinition(ShiroFilterFactoryBean shiroFilterFactoryBean) throws Exception{
+    @Bean
+    public CustomerFilterChainDefinition customerFilterChainDefinition(ShiroFilterFactoryBean shiroFilterFactoryBean) throws Exception {
+        CustomerFilterChainDefinition customerFilterChainDefinition = new CustomerFilterChainDefinition();
+        customerFilterChainDefinition.setShiroFilter((AbstractShiroFilter) shiroFilterFactoryBean.getObject());
 
-        CustomerFilterChainDefinition chainDefinition = new CustomerFilterChainDefinition();
-        chainDefinition.setShiroFilter((AbstractShiroFilter) shiroFilterFactoryBean.getObject());
+        LinkedHashMap<String,String> map = new LinkedHashMap<>();
+        map.put("/favicon.ico","anon");
+        map.put("/bootstrap/**","anon");
+        map.put("/dist/**","anon");
+        map.put("/plugins/**","anon");
+        map.put("/js/**","anon");
+        map.put("/logout","logout");
 
-        LinkedHashMap<String,String> linkedHashMap = new LinkedHashMap<>();
-        linkedHashMap.put("/favicon.ico","anon");
-        linkedHashMap.put("/bootstrap/**","anon");
-        linkedHashMap.put("/dist/**","anon");
-        linkedHashMap.put("/plugins/**","anon");
-        linkedHashMap.put("/js/**","anon");
-        linkedHashMap.put("/logout","logout");
-
-        chainDefinition.setFilterChainDefinitions(linkedHashMap);
-        return chainDefinition;
-
+        customerFilterChainDefinition.setFilterChainDefinitions(map);
+        return customerFilterChainDefinition;
     }
+
 
 
 }

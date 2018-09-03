@@ -25,7 +25,6 @@ public class CustomerFilterChainDefinition {
     @Reference(version = "1.0")
     private RolePermissionService rolePermissionService;
 
-
     private Map<String,String> filterChainDefinitions;
     private AbstractShiroFilter shiroFilter;
 
@@ -33,7 +32,7 @@ public class CustomerFilterChainDefinition {
         this.shiroFilter=shiroFilter;
     }
 
-    public void setFilterChainDefinitions(LinkedHashMap<String,String> filterChainDefinitions) {
+    public void setFilterChainDefinitions(Map<String,String> filterChainDefinitions) {
 
         this.filterChainDefinitions = filterChainDefinitions;
     }

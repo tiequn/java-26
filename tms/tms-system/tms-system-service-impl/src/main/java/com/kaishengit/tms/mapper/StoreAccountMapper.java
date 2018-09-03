@@ -3,8 +3,11 @@ package com.kaishengit.tms.mapper;
 import com.kaishengit.tms.entity.StoreAccount;
 import com.kaishengit.tms.entity.StoreAccountExample;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+@Mapper
 public interface StoreAccountMapper {
     long countByExample(StoreAccountExample example);
 

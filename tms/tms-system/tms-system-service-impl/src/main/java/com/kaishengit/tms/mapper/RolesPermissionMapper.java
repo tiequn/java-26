@@ -3,8 +3,11 @@ package com.kaishengit.tms.mapper;
 import com.kaishengit.tms.entity.RolesPermissionExample;
 import com.kaishengit.tms.entity.RolesPermissionKey;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+@Mapper
 public interface RolesPermissionMapper {
     long countByExample(RolesPermissionExample example);
 

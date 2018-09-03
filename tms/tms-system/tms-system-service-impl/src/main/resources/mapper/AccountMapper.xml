@@ -172,7 +172,15 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+
+  <select id="findAllWithRolesByQueryParam" resultType="com.kaishengit.tms.entity.Account">
+
+
+
+  </select>
+
+
+    <update id="updateByExampleSelective" parameterType="map">
     update account
     <set>
       <if test="record.id != null">

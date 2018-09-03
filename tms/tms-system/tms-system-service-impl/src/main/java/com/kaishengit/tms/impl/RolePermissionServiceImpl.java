@@ -4,9 +4,10 @@ import com.alibaba.dubbo.common.extension.Activate;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
-import com.kaishengit.tms.entity.Permission;
-import com.kaishengit.tms.entity.PermissionExample;
+import com.kaishengit.tms.entity.*;
 import com.kaishengit.tms.mapper.PermissionMapper;
+import com.kaishengit.tms.mapper.RolesMapper;
+import com.kaishengit.tms.mapper.RolesPermissionMapper;
 import com.kaishengit.tms.service.RolePermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -24,6 +25,12 @@ public class RolePermissionServiceImpl implements RolePermissionService {
     @Autowired
     private PermissionMapper permissionMapper;
 
+    @Autowired
+    private RolesPermissionMapper rolesPermissionMapper;
+
+    @Autowired
+    private RolesMapper rolesMapper;
+
     /**
      * 查找所有的权限
      * @return
@@ -36,6 +43,36 @@ public class RolePermissionServiceImpl implements RolePermissionService {
         List<Permission> resultList = new ArrayList<>();
         treeList(permissionList,resultList,0);
         return resultList;
+    }
+
+    /**
+     * 根据账号ID查询拥有的角色集合
+     * @param id
+     * @return
+     */
+    @Override
+    public List<Roles> findRolesByAccountId(Integer id) {
+
+        return rolesMapper.findRolesByAccountId(id);
+    }
+
+    /**
+     * 根据角色ID查询所有的对应的权限
+     * @return
+     */
+    @Override
+    public List<Permission> findAllPermissionByRolesId(Integer rolesId) {
+        return permissionMapper.findAllPermissionByRolesId(rolesId);
+    }
+
+    /**
+     * 查询所有角色
+     * @return
+     */
+    @Override
+    public List<Roles> findAllRole() {
+        RolesExample rolesExample = new RolesExample();
+        return rolesMapper.selectByExample(rolesExample);
     }
 
     /**

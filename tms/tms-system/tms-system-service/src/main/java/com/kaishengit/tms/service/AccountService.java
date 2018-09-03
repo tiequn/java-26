@@ -3,6 +3,9 @@ package com.kaishengit.tms.service;
 import com.kaishengit.tms.entity.Account;
 import com.kaishengit.tms.entity.AccountLoginLog;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * 系统账号的业务类
  * @author guojiabang
@@ -22,4 +25,11 @@ public interface AccountService {
      * @param accountLoginLog
      */
     void saveAccountLoginLog(AccountLoginLog accountLoginLog);
+
+    /**
+     * 根据UI传来的查询参数查询所有账号并加载对应的角色列表
+     * @param requestParam
+     * @return
+     */
+    List<Account> findAllAccountWithRolesByQueryParam(Map<String, Object> requestParam);
 }
