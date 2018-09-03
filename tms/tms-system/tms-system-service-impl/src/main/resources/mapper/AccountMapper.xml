@@ -173,9 +173,56 @@
     </if>
   </select>
 
-  <select id="findAllWithRolesByQueryParam" resultType="com.kaishengit.tms.entity.Account">
 
-
+  <resultMap id="accountWithRolesMap" type="com.kaishengit.tms.entity.Account" extends="BaseResultMap">
+    <collection property="rolesList" ofType="com.kaishengit.tms.entity.Roles">
+      <id property="id" column="rolesId"/>
+      <result property="updateTime" column="rolesUpdateTime"/>
+      <result property="createTime" column="rolesCreateTime"/>
+      <result property="rolesCode" column="roles_code"/>
+      <result property="rolesName" column="roles_name"/>
+    </collection>
+  </resultMap>
+  <select id="findAllWithRolesByQueryParam" resultMap="accountWithRolesMap">
+    SELECT
+      account.*, roles.id AS rolesId,
+      roles.roles_code,
+      roles.roles_name,
+      roles.create_time AS rolesCreateTime,
+      roles.update_time AS rolesUpdateTime
+    FROM
+      account
+    LEFT JOIN account_roles ON account.id = account_roles.account_id
+    LEFT JOIN roles ON roles.id = account_roles.roles_id
+    <choose>
+      <when test="rolesId != null and rolesId != 0">
+        inner JOIN (
+        SELECT
+          id
+        FROM
+          account
+        INNER JOIN account_roles ON account_roles.account_id = account.id
+        <where>
+            account_roles.roles_id = #{rolesId}
+          <if test="nameMobile != null and nameMobile != ''">
+            and( (account.account_name like concat('%',#{nameMobile},'%'))
+            or
+              (account.account_mobile like concat('%',#{nameMobile},'%')))
+          </if>
+        </where>
+          ) AS temp ON account.id = temp.id
+      </when>
+      <otherwise>
+        <where>
+          <if test="nameMobile != null and nameMobile != ''">
+              (account.account_name like concat('%',#{nameMobile},'%'))
+            or
+              (account.account_mobile like concat('%',#{nameMobile},'%'))
+          </if>
+        </where>
+      </otherwise>
+    </choose>
+    order by account.id desc
 
   </select>
 

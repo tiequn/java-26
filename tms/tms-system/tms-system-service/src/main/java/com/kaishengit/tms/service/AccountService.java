@@ -32,4 +32,11 @@ public interface AccountService {
      * @return
      */
     List<Account> findAllAccountWithRolesByQueryParam(Map<String, Object> requestParam);
+
+    /**
+     * 新增账号
+     * @param account
+     * @param rolesIds
+     */
+    void saveAccount(Account account, Integer[] rolesIds);
 }

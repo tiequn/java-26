@@ -9,6 +9,7 @@ import com.kaishengit.tms.service.RolePermissionService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -46,6 +47,26 @@ public class AccountController {
         model.addAttribute("accountList",accountList);
         model.addAttribute("rolesList",rolesList);
         return "/manage/account/home";
+    }
+
+    /**
+     * 新增角色
+     * @param model
+     * @return
+     */
+    @GetMapping("/new")
+    public String newAccount(Model model){
+
+        List<Roles> rolesList = rolePermissionService.findAllRole();
+
+        model.addAttribute("rolesList",rolesList);
+        return "/manage/account/new";
+    }
+
+    @PostMapping("/new")
+    public String newAccount(Account account, Integer[] rolesIds){
+        accountService.saveAccount(account,rolesIds);
+        return "redirect:/manage/account";
     }
 
 }

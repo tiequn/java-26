@@ -2,6 +2,7 @@ package com.kaishengit.tms.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author 
@@ -44,7 +45,17 @@ public class Account implements Serializable {
      */
     private String accountState;
 
+    private List<Roles> rolesList;
+
     private static final long serialVersionUID = 1L;
+
+    public List<Roles> getRolesList() {
+        return rolesList;
+    }
+
+    public void setRolesList(List<Roles> rolesList) {
+        this.rolesList = rolesList;
+    }
 
     public Integer getId() {
         return id;
@@ -139,19 +150,15 @@ public class Account implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", accountName=").append(accountName);
-        sb.append(", accountMobile=").append(accountMobile);
-        sb.append(", accountPassword=").append(accountPassword);
-        sb.append(", createTime=").append(createTime);
-        sb.append(", updateTime=").append(updateTime);
-        sb.append(", accountState=").append(accountState);
-        sb.append(", serialVersionUID=").append(serialVersionUID);
-        sb.append("]");
-        return sb.toString();
+        return "Account{" +
+                "id=" + id +
+                ", accountName='" + accountName + '\'' +
+                ", accountMobile='" + accountMobile + '\'' +
+                ", accountPassword='" + accountPassword + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", accountState='" + accountState + '\'' +
+                ", rolesList=" + rolesList +
+                '}';
     }
 }
